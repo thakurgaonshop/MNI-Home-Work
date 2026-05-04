@@ -3,256 +3,384 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#0f172a">
+  <meta name="theme-color" content="#1a0533">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="HW Entry">
   <meta name="description" content="শিক্ষক হোমওয়ার্ক এন্ট্রি অ্যাপ">
-
   <title>হোমওয়ার্ক এন্ট্রি</title>
-
-  <!-- PWA Manifest -->
   <link rel="manifest" href="manifest.json">
-
-  <!-- Apple Touch Icons -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
-  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
-
-  <!-- Favicon -->
   <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="icons/icon-16.png">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f0f4ff;
+  --surface:   #ffffff;
+  --primary:   #4f35d4;
+  --primary2:  #7c3aed;
+  --accent:    #06b6d4;
+  --gold:      #f59e0b;
+  --success:   #10b981;
+  --danger:    #ef4444;
+  --text:      #0f0a2e;
+  --muted:     #64748b;
+  --border:    #e2e8f0;
+  --card-shadow: 0 8px 32px rgba(79,53,212,0.10);
+  --radius:    20px;
+}
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Hind Siliguri', 'Noto Serif Bengali', sans-serif;
+  background: var(--bg);
+  min-height: 100vh;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124,58,237,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(6,182,212,0.14) 0%, transparent 60%);
+}
 
-  <style>
-    /* ── RESET & BASE ── */
-    * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
-    html, body { height: 100%; }
-    body {
-      background: #eef2f6;
-      font-family: 'Noto Serif Bengali', serif;
-      -webkit-font-smoothing: antialiased;
-      overscroll-behavior-y: contain;
-    }
+/* ── PWA BANNERS ── */
+#installBanner {
+  display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
+  background: linear-gradient(90deg, #1a0533, #4f35d4);
+  color: white; padding: 14px 20px;
+  align-items: center; gap: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  animation: slideDown 0.4s ease;
+}
+#installBanner.show { display: flex; }
+@keyframes slideDown { from{transform:translateY(-100%)} to{transform:translateY(0)} }
+#installBanner .ib-icon { font-size: 26px; flex-shrink: 0; }
+#installBanner .ib-text { flex: 1; font-size: 13px; line-height: 1.4; }
+#installBanner .ib-text strong { display: block; font-size: 14px; }
+.btn-install { background: var(--gold); color: #1a0533; border: none; padding: 8px 16px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
+.btn-install-dismiss { background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 12px; border-radius: 10px; font-family: inherit; font-size: 13px; cursor: pointer; }
+#offlineBanner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: var(--danger); color: white; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; font-family: inherit; }
+#offlineBanner.show { display: block; }
 
-    /* ── PWA Install Banner ── */
-    #installBanner {
-      display: none;
-      position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
-      background: linear-gradient(135deg, #0f172a, #1e3a5f);
-      color: white; padding: 14px 20px;
-      align-items: center; gap: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      animation: slideDown 0.4s ease;
-    }
-    #installBanner.show { display: flex; }
-    @keyframes slideDown { from { transform: translateY(-100%); } to { transform: translateY(0); } }
-    #installBanner .ib-icon { font-size: 28px; flex-shrink: 0; }
-    #installBanner .ib-text { flex: 1; font-size: 13px; line-height: 1.5; }
-    #installBanner .ib-text strong { display: block; font-size: 15px; margin-bottom: 2px; }
-    #installBanner .ib-btns { display: flex; gap: 8px; flex-shrink: 0; }
-    .btn-install {
-      background: #3b82f6; color: white; border: none; padding: 8px 16px;
-      border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer;
-    }
-    .btn-install-dismiss {
-      background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 12px;
-      border-radius: 10px; font-family: inherit; font-size: 13px; cursor: pointer;
-    }
+#iosGuide { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000; background: white; border-radius: 24px 24px 0 0; padding: 30px 24px 40px; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); animation: slideUp 0.4s ease; }
+#iosGuide.show { display: block; }
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+#iosGuide h3 { font-size: 20px; color: var(--text); margin-bottom: 20px; text-align: center; }
+.ios-step { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.ios-step-num { background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
+.ios-step-text { font-size: 15px; color: #334155; line-height: 1.5; }
+.btn-ios-close { width: 100%; margin-top: 20px; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 14px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
 
-    /* ── iOS Install Guide ── */
-    #iosGuide {
-      display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000;
-      background: white; border-radius: 24px 24px 0 0;
-      padding: 30px 24px 40px; box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
-      animation: slideUp 0.4s ease;
-    }
-    #iosGuide.show { display: block; }
-    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-    #iosGuide h3 { font-size: 20px; color: #0f172a; margin-bottom: 20px; text-align: center; }
-    .ios-step { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-    .ios-step-num { background: #0f172a; color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
-    .ios-step-text { font-size: 15px; color: #334155; line-height: 1.5; }
-    .btn-ios-close { width: 100%; margin-top: 20px; padding: 16px; background: #0f172a; color: white; border: none; border-radius: 14px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+/* ── WRAPPER ── */
+#hwApp {
+  position: relative; z-index: 1;
+  max-width: 860px; margin: 0 auto;
+  padding: 0 16px 40px;
+  font-family: 'Hind Siliguri', 'Noto Serif Bengali', sans-serif;
+}
 
-    /* ── Offline Banner ── */
-    #offlineBanner {
-      display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
-      background: #dc2626; color: white; text-align: center;
-      padding: 10px; font-size: 14px; font-weight: 600; font-family: 'Noto Serif Bengali', serif;
-    }
-    #offlineBanner.show { display: block; }
+/* ── HEADER ── */
+.f-header {
+  background: linear-gradient(135deg, #1a0533 0%, #4f35d4 55%, #7c3aed 100%);
+  border-radius: 0 0 36px 36px;
+  padding: 54px 24px 80px;
+  text-align: center;
+  position: relative; overflow: hidden;
+  box-shadow: 0 20px 60px rgba(79,53,212,0.35);
+  margin: 0 -16px 0;
+}
+.f-header::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle at 15% 50%, rgba(255,255,255,0.12) 0%, transparent 40%),
+    radial-gradient(circle at 85% 20%, rgba(6,182,212,0.2) 0%, transparent 40%);
+  pointer-events: none;
+}
+.f-header::after {
+  content: '';
+  position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.08); pointer-events: none;
+}
+.hdr-ring {
+  position: absolute; bottom: -40px; left: -40px;
+  width: 160px; height: 160px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.06);
+}
+.f-logo-wrap {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 80px; height: 80px; border-radius: 24px;
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.25);
+  font-size: 44px; margin-bottom: 18px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+.f-school { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.3; font-family: 'Noto Serif Bengali', serif; }
+.f-sub {
+  display: inline-block; margin-top: 12px;
+  font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 30px;
+}
+.f-version {
+  position: absolute; top: 18px; right: 20px;
+  font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.15);
+}
 
-    /* ══════════════════════════════════════════
-       ORIGINAL APP STYLES (UNCHANGED)
-    ══════════════════════════════════════════ */
-    #hwApp * { margin:0; padding:0; box-sizing:border-box; }
-    #hwApp { font-family: 'Noto Serif Bengali', serif; max-width: 900px; margin: 30px auto; padding: 0 20px; width: 100%; }
+/* ── LOGIN ── */
+#loginSection {
+  background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
+  border-radius: 28px; padding: 40px 32px 36px;
+  max-width: 400px; margin: -52px auto 28px;
+  box-shadow: 0 24px 64px rgba(79,53,212,0.18), 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid rgba(255,255,255,0.9);
+  position: relative; z-index: 10; text-align: center;
+}
+.login-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 30px; margin: 0 auto 18px;
+  box-shadow: 0 8px 24px rgba(79,53,212,0.3);
+}
+#loginSection h2 { font-size: 22px; color: var(--text); margin-bottom: 4px; font-weight: 700; font-family: 'Noto Serif Bengali', serif; }
+.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
+.input-wrap { position: relative; margin-bottom: 14px; }
+.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; }
+.login-input {
+  width: 100%; padding: 16px 20px 16px 46px;
+  border-radius: 14px; border: 2px solid var(--border);
+  background: #f8fafc; font-size: 16px;
+  font-family: 'Hind Siliguri', inherit; transition: all 0.3s; color: var(--text);
+}
+.login-input:focus { border-color: var(--primary); background: white; outline: none; box-shadow: 0 0 0 4px rgba(79,53,212,0.12); }
+.btn-login {
+  width: 100%; padding: 17px;
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  color: white; border: none; border-radius: 14px;
+  font-size: 17px; font-weight: 700; font-family: 'Hind Siliguri', inherit;
+  cursor: pointer; box-shadow: 0 8px 24px rgba(79,53,212,0.35);
+  transition: all 0.3s; margin-top: 6px;
+}
+.btn-login:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(79,53,212,0.45); }
 
-    .f-header {
-      background: linear-gradient(135deg, #0f172a, #334155); color: white;
-      border-radius: 28px; padding: 45px 20px; text-align: center;
-      box-shadow: 0 15px 30px rgba(15, 23, 42, 0.3); margin-bottom: 40px; position: relative; overflow: hidden;
-    }
-    .f-header::before {
-      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-      transform: rotate(30deg); pointer-events: none;
-    }
-    .f-logo { font-size: 56px; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4)); line-height: 1;}
-    .f-school { font-size: 28px; font-weight: 700; line-height: 1.3; color: #f8fafc; }
-    .f-sub { font-size: 15px; opacity: 0.95; margin-top: 10px; font-weight: 600; background: rgba(255,255,255,0.15); padding: 6px 18px; border-radius: 20px; display: inline-block; backdrop-filter: blur(4px);}
+/* ── USER BAR ── */
+.user-bar {
+  display: flex; justify-content: space-between; align-items: center;
+  background: var(--surface); padding: 14px 20px; border-radius: 18px; margin-bottom: 20px;
+  box-shadow: 0 2px 12px rgba(79,53,212,0.08); border: 1px solid rgba(79,53,212,0.08);
+}
+.user-info { display: flex; align-items: center; gap: 12px; }
+.user-avatar {
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; font-size: 22px;
+  box-shadow: 0 4px 12px rgba(79,53,212,0.25);
+}
+.user-text-sm { font-size: 12px; color: var(--muted); font-weight: 500; }
+.user-text-lg { font-size: 17px; color: var(--text); font-weight: 700; font-family: 'Noto Serif Bengali', serif; }
+.btn-logout { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; padding: 9px 18px; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.3s; }
+.btn-logout:hover { background: #fee2e2; }
 
-    #loginSection {
-      background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
-      border-radius: 24px; padding: 45px 35px; max-width: 420px; margin: -70px auto 40px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15); text-align: center; position: relative; z-index: 10; border: 1px solid rgba(255,255,255,0.8);
-    }
-    #loginSection h2 { font-size: 24px; color: #0f172a; margin-bottom: 25px; font-weight: 700;}
-    .login-input {
-      width: 100%; padding: 18px 20px; margin-bottom: 18px; border-radius: 14px;
-      border: 2px solid #e2e8f0; background: #f8fafc; font-size: 16px; font-family: inherit; transition: all 0.3s ease; color: #0f172a;
-    }
-    .login-input:focus { border-color: #3b82f6; background: white; outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); }
-    .btn-login {
-      width: 100%; padding: 18px; background: linear-gradient(135deg, #2563eb, #1d4ed8); color: white;
-      border: none; border-radius: 14px; font-size: 18px; font-weight: 700; font-family: inherit; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 8px 15px rgba(37, 99, 235, 0.3);
-    }
-    .btn-login:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(37, 99, 235, 0.4); }
+/* ── CARDS ── */
+.f-card {
+  background: var(--surface); border-radius: var(--radius);
+  box-shadow: var(--card-shadow); border: 1px solid rgba(79,53,212,0.07);
+  margin-bottom: 18px; overflow: hidden;
+}
+.f-card-title {
+  background: linear-gradient(90deg, rgba(79,53,212,0.06), rgba(124,58,237,0.03));
+  border-bottom: 1px solid rgba(79,53,212,0.08);
+  padding: 18px 22px; font-size: 17px; font-weight: 700;
+  color: var(--text); display: flex; align-items: center; gap: 12px;
+  font-family: 'Noto Serif Bengali', serif;
+}
+.card-title-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--primary), var(--primary2));
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  box-shadow: 0 4px 10px rgba(79,53,212,0.25); flex-shrink: 0;
+}
+.f-card-body { padding: 22px; }
 
-    .user-bar {
-      display: flex; justify-content: space-between; align-items: center;
-      background: white; padding: 16px 24px; border-radius: 20px; margin-bottom: 24px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 1px solid #e2e8f0;
-    }
-    .user-info { display: flex; align-items: center; gap: 14px; }
-    .user-avatar { background: #e0f2fe; color: #0369a1; width: 46px; height: 46px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
-    .user-text-sm { font-size: 13px; color: #64748b; font-weight: 600; line-height: 1.2; }
-    .user-text-lg { font-size: 18px; color: #0f172a; font-weight: 700; line-height: 1.2; }
-    .btn-logout { background: #fee2e2; color: #dc2626; border: none; padding: 10px 20px; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 14px; cursor: pointer; transition: 0.3s; }
-    .btn-logout:hover { background: #fecaca; }
+.f-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media(max-width:580px){ .f-top-grid { grid-template-columns:1fr; gap:14px; } }
+.f-field label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.f-field input, .f-field select {
+  width: 100%; padding: 15px 18px; font-family: 'Hind Siliguri', inherit;
+  font-size: 16px; color: var(--text); background: #f8faff;
+  border: 2px solid rgba(79,53,212,0.15); border-radius: 14px; outline: none; transition: all 0.3s;
+}
+.f-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234f35d4' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 14px center; padding-right: 42px;
+  cursor: pointer; -webkit-appearance: none; appearance: none;
+}
+.f-field input:focus, .f-field select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(79,53,212,0.10); }
 
-    .f-card {
-      background: white; border-radius: 20px; box-shadow: 0 8px 25px rgba(0,0,0,0.04); border: 1px solid #e2e8f0; margin-bottom: 25px; transition: transform 0.3s;
-    }
-    .f-card-title {
-      background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 20px 26px; font-size: 18px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 12px; border-radius: 20px 20px 0 0;
-    }
-    .f-card-body { padding: 26px; }
+/* ── STATUS ── */
+.f-status-banner { border-radius: 16px; padding: 16px 22px; font-size: 15px; font-weight: 600; display: none; align-items: center; gap: 14px; margin-bottom: 18px; }
+.f-status-banner.show { display: flex; }
+.f-status-banner.partial { background: #fff7ed; color: #9a3412; border: 1.5px solid #fcd34d; }
+.f-status-banner.done    { background: #ecfdf5; color: #065f46; border: 1.5px solid #6ee7b7; }
+.f-status-icon { font-size: 26px; flex-shrink: 0; }
+.f-status-text { flex: 1; line-height: 1.5; font-family: 'Noto Serif Bengali', serif; }
 
-    .f-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media(max-width:600px){ .f-top-grid { grid-template-columns:1fr; gap: 18px;} }
-    .f-field label { display: block; font-size: 14px; font-weight: 700; color: #475569; margin-bottom: 8px; }
-    .f-field input, .f-field select {
-      width: 100%; padding: 16px 20px; font-family: inherit; font-size: 16px; color: #1e293b; background: #f8fafc; border: 2px solid #cbd5e1; border-radius: 14px; outline: none; transition: all 0.3s;
-    }
-    .f-field select{
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-      background-repeat: no-repeat; background-position: right 16px center; padding-right: 45px; cursor: pointer;
-      -webkit-appearance: none; appearance: none;
-    }
-    .f-field input:focus, .f-field select:focus { border-color: #2563eb; background: white; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+/* ── SUBJECTS ── */
+.subj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media(max-width:600px){ .subj-grid { grid-template-columns:1fr; } }
+.subj-item { border: 2px solid rgba(79,53,212,0.12); border-radius: 16px; overflow: hidden; transition: all 0.3s; background: #fafbff; }
+.subj-item:focus-within { border-color: var(--primary); box-shadow: 0 8px 24px rgba(79,53,212,0.15); transform: translateY(-2px); }
+.subj-item.already-submitted { border-color: var(--gold); background: #fffbeb; }
+.subj-head {
+  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  background: linear-gradient(90deg, rgba(79,53,212,0.06), rgba(124,58,237,0.03));
+  border-bottom: 1px solid rgba(79,53,212,0.08);
+}
+.subj-item.already-submitted .subj-head { background: #fef3c7; border-bottom: 1px solid #fde68a; }
+.subj-name { font-size: 14px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; font-family: 'Noto Serif Bengali', serif; }
+.subj-icon { font-size: 18px; }
+.badge-submitted { background: linear-gradient(135deg, var(--success), #059669); color: white; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.subj-ta { width: 100%; min-height: 88px; border: none; padding: 14px 16px; font-family: 'Noto Serif Bengali', serif; font-size: 15px; resize: vertical; outline: none; background: transparent; color: #334155; line-height: 1.7; }
 
-    .f-status-banner {
-      border-radius: 16px; padding: 18px 24px; font-size: 15px; font-weight: 600; display: none; align-items: center; gap: 14px; margin-bottom: 25px;
-    }
-    .f-status-banner.show { display: flex; }
-    .f-status-banner.partial { background: #fff7ed; color: #9a3412; border: 1px solid #fcd34d; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.1);}
-    .f-status-banner.done { background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1);}
-    .f-status-icon { font-size: 28px; flex-shrink: 0; }
-    .f-status-text { flex: 1; line-height: 1.5; }
+/* ── SUBMIT ── */
+.btn-submit {
+  width: 100%; padding: 19px;
+  background: linear-gradient(135deg, #1a0533 0%, var(--primary) 50%, var(--primary2) 100%);
+  color: white; border: none; border-radius: 18px;
+  font-family: 'Hind Siliguri', inherit; font-size: 18px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+  box-shadow: 0 12px 32px rgba(79,53,212,0.35); transition: all 0.3s; overflow: hidden; position: relative;
+}
+.btn-submit::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: translateX(-100%); transition: transform 0.5s;
+}
+.btn-submit:hover:not(:disabled)::before { transform: translateX(100%); }
+.btn-submit:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(79,53,212,0.45); }
+.btn-submit:disabled { background: linear-gradient(135deg, #94a3b8, #64748b); box-shadow: none; cursor: not-allowed; }
 
-    .subj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-    @media(max-width:650px){ .subj-grid { grid-template-columns:1fr; } }
-    .subj-item { border: 2px solid #cbd5e1; border-radius: 16px; overflow: hidden; transition: all .3s ease; background: #ffffff; }
-    .subj-item:focus-within { border-color: #2563eb; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15); transform: translateY(-2px);}
-    .subj-item.already-submitted { border-color: #f59e0b; background: #fffbeb; }
+/* ── TOAST ── */
+.f-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); min-width: 300px; padding: 16px 24px; border-radius: 16px; font-size: 15px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; z-index: 9999; box-shadow: 0 12px 40px rgba(0,0,0,0.2); font-family: 'Noto Serif Bengali', serif; }
+.f-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.f-toast.success { background: linear-gradient(135deg, var(--success), #059669); color: white; }
+.f-toast.error   { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
 
-    .subj-head { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; gap: 8px; background: #f1f5f9; border-bottom: 1px solid #e2e8f0;}
-    .subj-item.already-submitted .subj-head { background: #fef3c7; border-bottom: 1px solid #fde68a;}
-    .subj-name { font-size: 15px; font-weight: 700; color: #0f172a; display: flex; align-items: center; gap: 10px; }
-    .subj-icon { font-size: 20px; }
-    .badge-submitted { background: #059669; color: white; border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 700; }
-    .subj-ta { width: 100%; min-height: 90px; border: none; padding: 16px 18px; font-family: inherit; font-size: 15px; resize: vertical; outline: none; background: transparent; color: #334155; line-height: 1.6;}
+.f-loading { text-align: center; padding: 40px; color: var(--muted); font-family: 'Noto Serif Bengali', serif; }
+.spin-md { width: 44px; height: 44px; border: 4px solid rgba(79,53,212,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-    .btn-submit {
-      width: 100%; padding: 20px; background: linear-gradient(135deg, #0f172a, #334155); color: white; border: none; border-radius: 18px; font-family: inherit; font-size: 18px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3); transition: all 0.3s;
-    }
-    .btn-submit:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 15px 30px rgba(15, 23, 42, 0.4); }
-    .btn-submit:disabled { background: #94a3b8; box-shadow: none; cursor: not-allowed; }
+/* ══════════════════════════════════════════
+   FOOTER AD BANNER — PREMIUM
+══════════════════════════════════════════ */
+.footer-ad {
+  margin-top: 28px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a0533 100%);
+  padding: 24px; position: relative; overflow: hidden;
+  box-shadow: 0 16px 48px rgba(15,23,42,0.3);
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
+  text-decoration: none; display: block;
+}
+.footer-ad:hover { transform: translateY(-3px); box-shadow: 0 22px 60px rgba(15,23,42,0.4); }
+.footer-ad::before {
+  content: ''; position: absolute; top: -60px; right: -60px;
+  width: 200px; height: 200px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(79,53,212,0.5), transparent 70%); pointer-events: none;
+}
+.footer-ad::after {
+  content: ''; position: absolute; bottom: -40px; left: -40px;
+  width: 150px; height: 150px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(6,182,212,0.35), transparent 70%); pointer-events: none;
+}
+.ad-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
+.ad-icon-wrap {
+  width: 60px; height: 60px; border-radius: 18px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(79,53,212,0.4);
+}
+.ad-text { flex: 1; }
+.ad-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
+.ad-title { font-size: 17px; font-weight: 700; color: white; font-family: 'Noto Serif Bengali', serif; line-height: 1.3; margin-bottom: 6px; }
+.ad-desc { font-size: 12px; color: rgba(255,255,255,0.68); line-height: 1.5; }
+.ad-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.ad-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); }
+.ad-cta-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ad-cta {
+  background: linear-gradient(135deg, var(--gold), #d97706);
+  color: #1a0533; border: none; padding: 11px 18px;
+  border-radius: 13px; font-weight: 700; font-size: 13px;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(245,158,11,0.4); transition: all 0.3s;
+}
+.ad-cta:hover { transform: scale(1.05); }
+.ad-arrow { font-size: 20px; color: rgba(255,255,255,0.4); }
 
-    .f-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(20px); min-width: 320px; padding: 18px 24px; border-radius: 16px; font-size: 16px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transition: all .4s ease; z-index: 9999; box-shadow: 0 15px 40px rgba(0,0,0,.2); }
-    .f-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-    .f-toast.success { background: #059669; color: white; }
-    .f-toast.error   { background: #dc2626; color: white; }
+.footer-copy { text-align: center; padding: 14px 0 6px; font-size: 12px; color: #94a3b8; }
+.footer-copy span { color: var(--primary); font-weight: 600; }
 
-    .f-loading { text-align: center; padding: 40px; color: #64748b; }
-    .spin-md { width: 44px; height: 44px; border: 4px solid #e2e8f0; border-top-color: #2563eb; border-radius: 50%; animation: spin .8s linear infinite; margin: 0 auto 15px; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media(max-width: 600px) {
-      #hwApp { margin: 10px auto; padding: 0 15px; }
-      .f-header { padding: 35px 15px; border-radius: 24px;} .f-logo { font-size: 46px; } .f-school { font-size: 24px; }
-      #loginSection { margin: -40px auto 30px; padding: 35px 25px; border-radius: 24px;}
-      .btn-submit { position: sticky; bottom: 10px; z-index: 100;}
-    }
-
-    /* Safe area for notch phones */
-    body { padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
-  </style>
+@media(max-width:600px){
+  #hwApp { padding: 0 12px 32px; }
+  .f-header { padding: 44px 18px 70px; border-radius: 0 0 28px 28px; }
+  .f-school { font-size: 22px; }
+  #loginSection { margin: -44px auto 22px; padding: 32px 20px; }
+  .ad-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
+  .ad-cta-col { width: 100%; flex-direction: row; justify-content: space-between; }
+  .ad-cta { flex: 1; text-align: center; padding: 12px; font-size: 14px; }
+  .btn-submit { position: sticky; bottom: 10px; z-index: 100; }
+}
+</style>
 </head>
 <body>
 
-<!-- Offline Banner -->
 <div id="offlineBanner">⚠️ ইন্টারনেট সংযোগ নেই</div>
 
-<!-- Android Install Banner -->
 <div id="installBanner">
   <div class="ib-icon">📲</div>
-  <div class="ib-text">
-    <strong>অ্যাপ ইনস্টল করুন</strong>
-    হোম স্ক্রিনে যোগ করুন — বিজ্ঞাপন নেই!
-  </div>
-  <div class="ib-btns">
+  <div class="ib-text"><strong>অ্যাপ ইনস্টল করুন</strong>হোম স্ক্রিনে যোগ করুন — বিজ্ঞাপন নেই!</div>
+  <div style="display:flex;gap:8px;flex-shrink:0;">
     <button class="btn-install" id="btnInstall">ইনস্টল</button>
     <button class="btn-install-dismiss" id="btnDismiss">✕</button>
   </div>
 </div>
 
-<!-- iOS Install Guide -->
 <div id="iosGuide">
   <h3>📲 iPhone-এ ইনস্টল করুন</h3>
-  <div class="ios-step">
-    <div class="ios-step-num">১</div>
-    <div class="ios-step-text">নিচে Safari-এর <strong>Share বাটন</strong> (□↑) চাপুন</div>
-  </div>
-  <div class="ios-step">
-    <div class="ios-step-num">২</div>
-    <div class="ios-step-text"><strong>"Add to Home Screen"</strong> বা <strong>"হোম স্ক্রিনে যোগ করুন"</strong> চাপুন</div>
-  </div>
-  <div class="ios-step">
-    <div class="ios-step-num">৩</div>
-    <div class="ios-step-text"><strong>"Add"</strong> বা <strong>"যোগ করুন"</strong> চাপুন</div>
-  </div>
+  <div class="ios-step"><div class="ios-step-num">১</div><div class="ios-step-text">Safari-এর <strong>Share বাটন</strong> (□↑) চাপুন</div></div>
+  <div class="ios-step"><div class="ios-step-num">২</div><div class="ios-step-text"><strong>"Add to Home Screen"</strong> চাপুন</div></div>
+  <div class="ios-step"><div class="ios-step-num">৩</div><div class="ios-step-text"><strong>"Add"</strong> চাপুন ✅</div></div>
   <button class="btn-ios-close" onclick="document.getElementById('iosGuide').classList.remove('show')">বুঝেছি ✓</button>
 </div>
 
-<!-- ══════════════ ORIGINAL APP HTML ══════════════ -->
+<!-- ══════════ MAIN APP ══════════ -->
 <div id="hwApp">
+
   <div class="f-header">
-    <div class="f-logo">🏫</div>
+    <div class="hdr-ring"></div>
+    <div class="f-version">v11 ✦</div>
+    <div class="f-logo-wrap">🏫</div>
     <div class="f-school" id="fSchoolName">লোড হচ্ছে...</div>
     <div class="f-sub" id="fSubTitle"></div>
   </div>
 
   <div id="loginSection">
-    <h2>👨‍🏫 <span id="loginHeadTxt"></span></h2>
-    <input type="text" id="lUser" class="login-input" placeholder="" autocomplete="username">
-    <input type="password" id="lPass" class="login-input" placeholder="" autocomplete="current-password">
+    <div class="login-avatar">👨‍🏫</div>
+    <h2 id="loginHeadTxt"></h2>
+    <p class="login-sub">আপনার তথ্য দিয়ে প্রবেশ করুন</p>
+    <div class="input-wrap"><span class="input-icon">👤</span><input type="text" id="lUser" class="login-input" placeholder="" autocomplete="username"></div>
+    <div class="input-wrap"><span class="input-icon">🔒</span><input type="password" id="lPass" class="login-input" placeholder="" autocomplete="current-password"></div>
     <button class="btn-login" id="btnLoginBtn" onclick="doLogin()"></button>
   </div>
 
@@ -266,7 +394,7 @@
     </div>
 
     <div class="f-card">
-      <div class="f-card-title"><span style="font-size: 24px;">📅</span> <span id="fStep1Title"></span></div>
+      <div class="f-card-title"><div class="card-title-icon">📅</div><span id="fStep1Title"></span></div>
       <div class="f-card-body">
         <div class="f-top-grid">
           <div class="f-field"><label id="fLblDate"></label><input type="text" id="fDate" inputmode="numeric"></div>
@@ -280,20 +408,46 @@
     </div>
 
     <div class="f-card">
-      <div class="f-card-title"><span style="font-size: 24px;">✍️</span> <span id="fStep2Title"></span></div>
+      <div class="f-card-title"><div class="card-title-icon">✍️</div><span id="fStep2Title"></span></div>
       <div class="f-card-body" id="subjectContainer">
-        <div style="text-align: center; padding: 40px; color: #64748b;" id="placeholderSelect"></div>
+        <div style="text-align:center;padding:40px;color:var(--muted);font-family:'Noto Serif Bengali',serif;" id="placeholderSelect"></div>
       </div>
     </div>
 
     <button class="btn-submit" id="fSubmitBtn" onclick="submitForm()" disabled>
-      <span class="btn-icon" style="font-size: 22px;">💾</span><span id="btnText"></span>
+      <span style="font-size:22px;">💾</span><span id="btnText"></span>
     </button>
   </div>
+
+  <!-- ══ FOOTER AD BANNER ══ -->
+  <div class="footer-ad" onclick="window.open('https://thakurgaonshop.com','_blank')">
+    <div class="ad-inner">
+      <div class="ad-icon-wrap">🏫</div>
+      <div class="ad-text">
+        <div class="ad-label">✦ Powered by</div>
+        <div class="ad-title">Thakurgaon Shop Software System</div>
+        <div class="ad-desc">সম্পূর্ণ ডিজিটাল স্কুল ম্যানেজমেন্ট সিস্টেম — ওয়েবসাইট ও সফটওয়্যার এর জন্য যোগাযোগ করুন।</div>
+        <div class="ad-badges">
+          <span class="ad-badge">📊 দোকান POS</span>
+          <span class="ad-badge">✅ School Management</span>
+          <span class="ad-badge">💰 Inventory</span>
+          <span class="ad-badge">📚 Web Design</span>
+          <span class="ad-badge">📞 01811544992</span>
+        </div>
+      </div>
+      <div class="ad-cta-col">
+        <button class="ad-cta">বিস্তারিত →</button>
+        <div class="ad-arrow">↗</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-copy">© 2026 <span>Thakurgaon Shop Software Management</span> · সর্বস্বত্ব সংরক্ষিত</div>
+
   <div class="f-toast" id="fToast"></div>
 </div>
 
-<!-- ══════════════ ORIGINAL APP SCRIPT (UNCHANGED) ══════════════ -->
+<!-- ══════════ SCRIPT ══════════ -->
 <script>
 var GAS_URL = 'https://script.google.com/macros/s/AKfycbymC4sKh_z08pmwgNNLFY1Wqm3Dch_wUxCzQ0Wa9k-pAMlxp0ql6CNrT-E8xiudXaaA/exec';
 
@@ -302,24 +456,24 @@ var T = {
   loginHead: 'শিক্ষক লগ-ইন',
   phUser: 'ইউজারনেম',
   phPass: 'পাসওয়ার্ড',
-  btnLoginTxt: 'লগ-ইন করুন',
-  btnWaitTxt: 'অপেক্ষা করুন...',
+  btnLoginTxt: '🔑 লগ-ইন করুন',
+  btnWaitTxt: '⏳ অপেক্ষা করুন...',
   welcomeTxt: 'স্বাগতম,',
-  logoutTxt: 'লগ-আউট',
-  step1: 'শ্রেণি ও তারিখ',
+  logoutTxt: '← লগ-আউট',
+  step1: 'শ্রেণি ও তারিখ নির্বাচন',
   step2: 'হোমওয়ার্ক লিখুন',
-  lblDate: 'তারিখ ★',
-  lblClass: 'শ্রেণি ★',
+  lblDate: '📅 তারিখ ★',
+  lblClass: '🏷️ শ্রেণি ★',
   clsDef: '— বাছাই করুন —',
   noPrev: 'ফাঁকা থাকলে লিখুন...',
   badgeOK: '✔ জমা আছে',
-  btnSaveTxt: 'সেভ করুন',
+  btnSaveTxt: 'হোমওয়ার্ক সেভ করুন',
   plsSelect: 'উপরে শ্রেণি বাছাই করুন',
   loadingData: 'ডাটা আনা হচ্ছে...',
-  statusDone: 'সম্পূর্ণ জমা আছে',
-  statusPart: 'আংশিক জমা আছে',
+  statusDone: 'সম্পূর্ণ হোমওয়ার্ক জমা আছে',
+  statusPart: 'আংশিক হোমওয়ার্ক জমা আছে',
   noSubj: 'বিষয় নেই',
-  successMsg: 'সেভ হয়েছে!'
+  successMsg: '✅ সফলভাবে সেভ হয়েছে!'
 };
 
 document.getElementById('fSubTitle').textContent = T.subTitle;
@@ -336,7 +490,7 @@ document.getElementById('fLblClass').textContent = T.lblClass;
 document.getElementById('btnText').textContent = T.btnSaveTxt;
 document.getElementById('placeholderSelect').textContent = T.plsSelect;
 
-var ICONS = { 'বাংলা':'📗', 'ইংরেজি':'📘', 'গণিত':'🔢', 'বিজ্ঞান':'🔬', 'ইসলাম':'☪️', 'কুরআন':'📖', 'আরবি':'✍️' };
+var ICONS = { 'বাংলা':'📗','ইংরেজি':'📘','গণিত':'🔢','বিজ্ঞান':'🔬','ইসলাম':'☪️','কুরআন':'📖','আরবি':'✍️' };
 function getIcon(n){ for(var k in ICONS){ if(n.indexOf(k)>=0) return ICONS[k]; } return '📝'; }
 function today(){ var d=new Date(); return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear(); }
 function escHTML(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -345,228 +499,161 @@ function escAttr(s){ return s.replace(/"/g,'&quot;'); }
 var toastTimer;
 function showToast(msg,type){
   var t=document.getElementById('fToast'); t.textContent=msg; t.className='f-toast '+type+' show';
-  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.className='f-toast '+type; }, 4000);
+  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.className='f-toast '+type; },4000);
 }
 
-function checkAuth() {
-  var teacher = localStorage.getItem('hw_teacher');
-  if (teacher) {
-    document.getElementById('loginSection').style.display = 'none';
-    document.getElementById('mainSection').style.display = 'block';
-    document.getElementById('loggedUser').textContent = teacher;
+function checkAuth(){
+  var teacher=localStorage.getItem('hw_teacher');
+  if(teacher){
+    document.getElementById('loginSection').style.display='none';
+    document.getElementById('mainSection').style.display='block';
+    document.getElementById('loggedUser').textContent=teacher;
     loadConfig();
   } else {
-    document.getElementById('loginSection').style.display = 'block';
-    document.getElementById('mainSection').style.display = 'none';
+    document.getElementById('loginSection').style.display='block';
+    document.getElementById('mainSection').style.display='none';
   }
 }
 
-async function doLogin() {
-  var user = document.getElementById('lUser').value.trim();
-  var pass = document.getElementById('lPass').value.trim();
-  if(!user || !pass) return;
-  var btn = document.getElementById('btnLoginBtn');
-  btn.textContent = T.btnWaitTxt; btn.disabled = true;
-  try {
-    var res = await fetch(GAS_URL, { method:'POST', body: JSON.stringify({action: 'login', username: user, password: pass}) });
-    var data = await res.json();
-    if(data.success) {
-      localStorage.setItem('hw_teacher', data.teacher);
-      checkAuth();
-    } else { showToast(data.error, 'error'); }
-  } catch(e) { showToast('Error: ইন্টারনেট সংযোগ চেক করুন', 'error'); }
-  btn.textContent = T.btnLoginTxt; btn.disabled = false;
+async function doLogin(){
+  var user=document.getElementById('lUser').value.trim();
+  var pass=document.getElementById('lPass').value.trim();
+  if(!user||!pass) return;
+  var btn=document.getElementById('btnLoginBtn');
+  btn.textContent=T.btnWaitTxt; btn.disabled=true;
+  try{
+    var res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass})});
+    var data=await res.json();
+    if(data.success){ localStorage.setItem('hw_teacher',data.teacher); checkAuth(); }
+    else { showToast(data.error,'error'); }
+  }catch(e){ showToast('Error: ইন্টারনেট সংযোগ চেক করুন','error'); }
+  btn.textContent=T.btnLoginTxt; btn.disabled=false;
 }
 
-function doLogout() { localStorage.removeItem('hw_teacher'); document.getElementById('lPass').value = ''; checkAuth(); }
+function doLogout(){ localStorage.removeItem('hw_teacher'); document.getElementById('lPass').value=''; checkAuth(); }
 
-var prevData = {};
+var prevData={};
 async function loadConfig(){
   try{
-    var r = await fetch(GAS_URL+'?action=config');
-    var d = await r.json();
+    var r=await fetch(GAS_URL+'?action=config');
+    var d=await r.json();
     if(!d.success) throw new Error(d.error);
-    document.getElementById('fSchoolName').textContent = d.schoolName;
-    var sel = document.getElementById('fClass');
-    sel.innerHTML = '<option value="">'+T.clsDef+'</option>';
+    document.getElementById('fSchoolName').textContent=d.schoolName;
+    var sel=document.getElementById('fClass');
+    sel.innerHTML='<option value="">'+T.clsDef+'</option>';
     d.classes.forEach(function(c){
-      var o = document.createElement('option'); o.value = c.tabName; o.textContent = c.displayName; o.dataset.subjects = JSON.stringify(c.subjects); sel.appendChild(o);
+      var o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; o.dataset.subjects=JSON.stringify(c.subjects); sel.appendChild(o);
     });
   }catch(e){}
 }
 
-var checkTimer = null;
-function onClassOrDateChange(){ clearTimeout(checkTimer); checkTimer = setTimeout(checkExisting, 400); }
+var checkTimer=null;
+function onClassOrDateChange(){ clearTimeout(checkTimer); checkTimer=setTimeout(checkExisting,400); }
 
 async function checkExisting(){
-  var date = document.getElementById('fDate').value.trim();
-  var sel  = document.getElementById('fClass');
-  var tab  = sel.value.trim();
-  var opt  = sel.options[sel.selectedIndex];
-
-  renderSubjects(opt, {});
-  if(!tab || !date) return;
+  var date=document.getElementById('fDate').value.trim();
+  var sel=document.getElementById('fClass');
+  var tab=sel.value.trim();
+  var opt=sel.options[sel.selectedIndex];
+  renderSubjects(opt,{});
+  if(!tab||!date) return;
   document.getElementById('fStatusBanner').classList.remove('show');
-  document.getElementById('subjectContainer').innerHTML = '<div class="f-loading"><div class="spin-md"></div><p>'+T.loadingData+'</p></div>';
-
+  document.getElementById('subjectContainer').innerHTML='<div class="f-loading"><div class="spin-md"></div><p>'+T.loadingData+'</p></div>';
   try{
-    var r = await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
-    var d = await r.json();
-    var existing = {};
-    if(d.success && d.found){
-      (d.subjects||[]).forEach(function(s){ if(s.homework.trim()) existing[s.subject] = s.homework.trim(); });
+    var r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
+    var d=await r.json();
+    var existing={};
+    if(d.success&&d.found){ (d.subjects||[]).forEach(function(s){ if(s.homework.trim()) existing[s.subject]=s.homework.trim(); }); }
+    prevData[tab+'|'+date]=existing;
+    renderSubjects(opt,existing);
+    var keys=Object.keys(existing);
+    var banner=document.getElementById('fStatusBanner');
+    if(keys.length>0){
+      var allSubjects=[];
+      try{ allSubjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
+      var allDone=allSubjects.length>0&&keys.length>=allSubjects.length;
+      banner.className='f-status-banner show '+(allDone?'done':'partial');
+      document.getElementById('fStatusIcon').textContent=allDone?'✅':'⚠️';
+      document.getElementById('fStatusText').textContent=allDone?T.statusDone:T.statusPart;
     }
-    prevData[tab+'|'+date] = existing;
-    renderSubjects(opt, existing);
-
-    var keys = Object.keys(existing);
-    var banner = document.getElementById('fStatusBanner');
-    if(keys.length > 0){
-      var allSubjects = [];
-      try{ allSubjects = JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
-      var allDone = allSubjects.length > 0 && keys.length >= allSubjects.length;
-      banner.className = 'f-status-banner show ' + (allDone ? 'done' : 'partial');
-      document.getElementById('fStatusIcon').textContent = allDone ? '✅' : '⚠️';
-      document.getElementById('fStatusText').textContent = allDone ? T.statusDone : T.statusPart;
-    }
-  }catch(e){ renderSubjects(opt, {}); }
+  }catch(e){ renderSubjects(opt,{}); }
 }
 
-function renderSubjects(opt, existing){
-  var container = document.getElementById('subjectContainer');
-  var submitBtn = document.getElementById('fSubmitBtn');
-
-  if(!opt || !opt.value){ container.innerHTML = '<div style="text-align: center; padding: 40px; color: #64748b;">'+T.plsSelect+'</div>'; submitBtn.disabled = true; return; }
-
-  var subjects = [];
-  try{ subjects = JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
-
-  if(!subjects.length){ container.innerHTML = '<p style="color:#ef4444;text-align:center;">'+T.noSubj+'</p>'; submitBtn.disabled = true; return; }
-
-  var grid = document.createElement('div');
-  grid.className = 'subj-grid';
-
+function renderSubjects(opt,existing){
+  var container=document.getElementById('subjectContainer');
+  var submitBtn=document.getElementById('fSubmitBtn');
+  if(!opt||!opt.value){ container.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-family:\'Noto Serif Bengali\',serif;">'+T.plsSelect+'</div>'; submitBtn.disabled=true; return; }
+  var subjects=[];
+  try{ subjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
+  if(!subjects.length){ container.innerHTML='<p style="color:var(--danger);text-align:center;font-family:\'Noto Serif Bengali\',serif;">'+T.noSubj+'</p>'; submitBtn.disabled=true; return; }
+  var grid=document.createElement('div'); grid.className='subj-grid';
   subjects.forEach(function(subj){
-    var prevHW = existing[subj] || '';
-    var hasExisting = !!prevHW;
-    var item = document.createElement('div');
-    item.className = 'subj-item' + (hasExisting ? ' already-submitted' : '');
-    item.id = 'item_' + subj.replace(/\s+/g,'_');
-    var safeId = 'hw_' + subj.replace(/\s+/g,'_');
-    var badgeHTML = hasExisting ? '<span class="badge-submitted">'+T.badgeOK+'</span>' : '';
-    item.innerHTML = '<div class="subj-head"><div class="subj-name"><span class="subj-icon">'+getIcon(subj)+'</span>'+escHTML(subj)+'</div>'+badgeHTML+'</div><textarea id="'+safeId+'" class="subj-ta" data-subject="'+escAttr(subj)+'" placeholder="'+escAttr(T.noPrev)+'">'+escHTML(prevHW)+'</textarea>';
-    item.querySelector('textarea').addEventListener('input', function(){
-      var it = document.getElementById(item.id);
-      if(this.value.trim() !== prevHW){ it.classList.add('has-new'); } else { it.classList.remove('has-new'); }
+    var prevHW=existing[subj]||'';
+    var hasExisting=!!prevHW;
+    var item=document.createElement('div');
+    item.className='subj-item'+(hasExisting?' already-submitted':'');
+    item.id='item_'+subj.replace(/\s+/g,'_');
+    var safeId='hw_'+subj.replace(/\s+/g,'_');
+    var badgeHTML=hasExisting?'<span class="badge-submitted">'+T.badgeOK+'</span>':'';
+    item.innerHTML='<div class="subj-head"><div class="subj-name"><span class="subj-icon">'+getIcon(subj)+'</span>'+escHTML(subj)+'</div>'+badgeHTML+'</div><textarea id="'+safeId+'" class="subj-ta" data-subject="'+escAttr(subj)+'" placeholder="'+escAttr(T.noPrev)+'">'+escHTML(prevHW)+'</textarea>';
+    item.querySelector('textarea').addEventListener('input',function(){
+      var it=document.getElementById(item.id);
+      if(this.value.trim()!==prevHW){ it.classList.add('has-new'); } else { it.classList.remove('has-new'); }
     });
     grid.appendChild(item);
   });
-  container.innerHTML = ''; container.appendChild(grid); submitBtn.disabled = false;
+  container.innerHTML=''; container.appendChild(grid); submitBtn.disabled=false;
 }
 
 async function submitForm(){
-  var date = document.getElementById('fDate').value.trim();
-  var tab  = document.getElementById('fClass').value.trim();
-  var teacher = localStorage.getItem('hw_teacher') || '';
-  if(!date || !tab) return;
-  var textareas = document.querySelectorAll('#subjectContainer textarea[data-subject]');
-  var homeworks = {}; var hasAny = false;
-  textareas.forEach(function(ta){ var val = ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
+  var date=document.getElementById('fDate').value.trim();
+  var tab=document.getElementById('fClass').value.trim();
+  var teacher=localStorage.getItem('hw_teacher')||'';
+  if(!date||!tab) return;
+  var textareas=document.querySelectorAll('#subjectContainer textarea[data-subject]');
+  var homeworks={}; var hasAny=false;
+  textareas.forEach(function(ta){ var val=ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
   if(!hasAny) return;
-  var btn = document.getElementById('fSubmitBtn');
-  btn.disabled = true; document.getElementById('btnText').textContent = T.btnWaitTxt;
+  var btn=document.getElementById('fSubmitBtn');
+  btn.disabled=true; document.getElementById('btnText').textContent=T.btnWaitTxt;
   try{
-    var res = await fetch(GAS_URL, { method:'POST', body: JSON.stringify({tab: tab, date: date, homeworks: homeworks, teacher: teacher}) });
-    var data = await res.json();
-    if(data.success) {
-      showToast(T.successMsg, 'success');
-      setTimeout(function(){ checkExisting(); }, 800);
-    }
-  }catch(err){ showToast('Error: ইন্টারনেট সংযোগ চেক করুন', 'error'); }
-  finally{ btn.disabled = false; document.getElementById('btnText').textContent = T.btnSaveTxt; }
+    var res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({tab:tab,date:date,homeworks:homeworks,teacher:teacher})});
+    var data=await res.json();
+    if(data.success){ showToast(T.successMsg,'success'); setTimeout(function(){ checkExisting(); },800); }
+  }catch(err){ showToast('Error: ইন্টারনেট সংযোগ চেক করুন','error'); }
+  finally{ btn.disabled=false; document.getElementById('btnText').textContent=T.btnSaveTxt; }
 }
 
 document.getElementById('fDate').addEventListener('change', onClassOrDateChange);
 document.getElementById('fDate').addEventListener('blur',   onClassOrDateChange);
 document.getElementById('fDate').value = today();
-
 checkAuth();
 </script>
 
-<!-- ══════════════ PWA SCRIPTS ══════════════ -->
 <script>
-// ── Service Worker Registration ──
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('sw.js').then(function(reg) {
-      console.log('SW registered:', reg.scope);
-    }).catch(function(err) {
-      console.log('SW failed:', err);
-    });
-  });
-}
-
-// ── Online/Offline Detection ──
-function updateOnlineStatus() {
-  var banner = document.getElementById('offlineBanner');
-  if (navigator.onLine) {
-    banner.classList.remove('show');
-  } else {
-    banner.classList.add('show');
-  }
-}
-window.addEventListener('online', updateOnlineStatus);
-window.addEventListener('offline', updateOnlineStatus);
+if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js'); }); }
+function updateOnlineStatus(){ document.getElementById('offlineBanner').classList.toggle('show',!navigator.onLine); }
+window.addEventListener('online',updateOnlineStatus);
+window.addEventListener('offline',updateOnlineStatus);
 updateOnlineStatus();
-
-// ── Android Install Prompt ──
-var deferredPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  deferredPrompt = e;
-  // Show banner after 3 seconds if not dismissed before
-  var dismissed = localStorage.getItem('pwa_dismissed');
-  if (!dismissed) {
-    setTimeout(function() {
-      document.getElementById('installBanner').classList.add('show');
-    }, 3000);
-  }
+var deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault(); deferredPrompt=e;
+  if(!localStorage.getItem('pwa_dismissed')){ setTimeout(function(){ document.getElementById('installBanner').classList.add('show'); },3000); }
 });
-
-document.getElementById('btnInstall').addEventListener('click', function() {
+document.getElementById('btnInstall').addEventListener('click',function(){
   document.getElementById('installBanner').classList.remove('show');
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then(function(result) {
-      deferredPrompt = null;
-    });
-  }
+  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt=null; }); }
 });
-
-document.getElementById('btnDismiss').addEventListener('click', function() {
-  document.getElementById('installBanner').classList.remove('show');
-  localStorage.setItem('pwa_dismissed', '1');
+document.getElementById('btnDismiss').addEventListener('click',function(){
+  document.getElementById('installBanner').classList.remove('show'); localStorage.setItem('pwa_dismissed','1');
 });
-
-// ── iOS Install Guide ──
-var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-var isInStandaloneMode = ('standalone' in window.navigator) && window.navigator.standalone;
-if (isIOS && !isInStandaloneMode) {
-  var iosDismissed = localStorage.getItem('ios_guide_dismissed');
-  if (!iosDismissed) {
-    setTimeout(function() {
-      document.getElementById('iosGuide').classList.add('show');
-      localStorage.setItem('ios_guide_dismissed', '1');
-    }, 5000);
-  }
+var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+var isStandalone=('standalone' in navigator)&&navigator.standalone;
+if(isIOS&&!isStandalone&&!localStorage.getItem('ios_guide_dismissed')){
+  setTimeout(function(){ document.getElementById('iosGuide').classList.add('show'); localStorage.setItem('ios_guide_dismissed','1'); },5000);
 }
-
-// ── App Installed Event ──
-window.addEventListener('appinstalled', function() {
-  document.getElementById('installBanner').classList.remove('show');
-  deferredPrompt = null;
-});
+window.addEventListener('appinstalled',function(){ document.getElementById('installBanner').classList.remove('show'); deferredPrompt=null; });
 </script>
-
 </body>
 </html>
