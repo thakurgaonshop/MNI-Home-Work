@@ -19,7 +19,8 @@
 
     /* Top Navigation Bar */
     .top-nav { display: flex; align-items: center; padding: 12px 16px; background: #1a0533; color: white; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-    .btn-home { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; color: white; font-weight: 700; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .btn-home { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; color: white; font-weight: 700; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; transition: 0.3s; }
+    .btn-home:hover { background: rgba(255,255,255,0.25); }
     .nav-title { margin: 0 0 0 15px; font-family: 'Noto Serif Bengali', serif; font-size: 18px; flex: 1; font-weight: 700; }
 
     /* Home Screen Design */
@@ -262,7 +263,10 @@
         <div class="f-card" id="dTeacherCard" style="display:none;">
           <div class="f-card-title">👨‍🏫 শিক্ষকদের স্ট্যাটাস</div>
           <div style="overflow-x:auto;">
-            <table class="d-teacher-tbl"><tbody id="dTeacherBody"></tbody></table>
+            <table class="d-teacher-tbl">
+              <thead><tr><th>শিক্ষকের নাম</th><th>শ্রেণি</th><th>ফোন</th><th>অবস্থা</th><th>মেসেজ</th></tr></thead>
+              <tbody id="dTeacherBody"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -364,6 +368,23 @@
       let t = document.getElementById('globalToast');
       t.textContent = msg; t.classList.add('show');
       setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // হোয়াটসঅ্যাপ নাম্বার ফরমেট ঠিক করার ফাংশন (কান্ট্রি কোড যুক্ত করা)
+    function getWaNum(p) {
+      if(!p) return '';
+      let num = p.toString().replace(/\D/g, ''); // স্পেস বা + চিহ্ন সরিয়ে ফেলা
+      if(num.startsWith('0')) return '88' + num;
+      if(!num.startsWith('880')) return '880' + num;
+      return num;
+    }
+
+    // টেবিলের জন্য ফোন নাম্বার 018... ফরম্যাটে দেখানো
+    function getDisplayNum(p) {
+      if(!p) return '—';
+      let num = p.toString().replace(/\D/g, '');
+      if(num.startsWith('880')) return '0' + num.substring(3);
+      return num;
     }
 
     // ইনজেক্ট ফুটার
@@ -575,8 +596,14 @@
         let teacher = dashTeachers.find(t => t.cls && t.cls.split(',').map(x=>x.trim()).includes(s.tabName));
         let waBtn='';
         if(teacher){
-          if(pct===100){ waBtn='<span style="display:block;text-align:center;color:#10b981;font-weight:bold;font-size:12px;">✔ জমা আছে</span>'; }
-          else { let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${document.getElementById('dDate').value}) ${s.displayName} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। অনুগ্রহ করে দ্রুত হোমওয়ার্ক দিন।\nধন্যবাদ।`); waBtn=`<a class="btn-wa" href="https://wa.me/${teacher.phone.replace(/^880/,'0')}?text=${msg}" target="_blank">💬 রিমাইন্ডার</a>`; }
+          if(pct===100){ 
+            waBtn='<span style="display:block;text-align:center;color:#10b981;font-weight:bold;font-size:12px;">✔ জমা আছে</span>'; 
+          }
+          else { 
+            let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${document.getElementById('dDate').value}) ${s.displayName} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। অনুগ্রহ করে দ্রুত হোমওয়ার্ক দিন।\nধন্যবাদ।`); 
+            let finalWaNum = getWaNum(teacher.phone);
+            waBtn=`<a class="btn-wa" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">💬 রিমাইন্ডার</a>`; 
+          }
         }
         let card=document.createElement('div'); card.className='d-cls-card';
         card.innerHTML=`<div class="d-cls-head"><span>${pct===100?'✅':(pct===0?'❌':'⚠️')}</span> ${s.displayName}</div><div class="d-cls-body"><div class="d-progress-wrap"><div class="d-progress-bar" style="width:${pct}%; background:${pct===100?'#10b981':(pct===0?'#ef4444':'#f59e0b')}"></div></div><div style="font-size:12px; margin-bottom:10px; color:#64748b;">${s.filledSubjects}/${s.totalSubjects} বিষয়</div>${waBtn}</div>`;
@@ -592,8 +619,12 @@
           if(s && s.submitted && s.filledSubjects===s.totalSubjects){ stText='জমা ✔'; stColor='#10b981'; } 
           else if(s && s.submitted){ stText='আংশিক ⚠'; stColor='#f59e0b'; }
           let waHtml='—';
-          if(t.phone && stColor!=='#10b981'){ let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${d.date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি।`); waHtml=`<a class="wa-link" href="https://wa.me/${t.phone.replace(/^880/,'0')}?text=${msg}" target="_blank">📲 পাঠান</a>`; }
-          rowsHtml+=`<tr><td><b>${t.name}</b></td><td>${c}</td><td style="color:${stColor}; font-weight:bold;">${stText}</td><td>${waHtml}</td></tr>`;
+          if(t.phone && stColor!=='#10b981'){ 
+            let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${d.date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি।`); 
+            let finalWaNum = getWaNum(t.phone);
+            waHtml=`<a class="wa-link" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">📲 পাঠান</a>`; 
+          }
+          rowsHtml+=`<tr><td><b>${t.name}</b></td><td>${c}</td><td>${getDisplayNum(t.phone)}</td><td style="color:${stColor}; font-weight:bold;">${stText}</td><td>${waHtml}</td></tr>`;
         });
       });
       tbody.innerHTML=rowsHtml; document.getElementById('dTeacherCard').style.display = rowsHtml ? 'block' : 'none';
@@ -608,12 +639,12 @@
          clsArr.forEach(c=>{
              let s = statusMap[c];
              if(!s || !s.submitted || s.filledSubjects<s.totalSubjects) {
-                 msgs.push({ phone: t.phone, text: encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। দ্রুত দিন।`) });
+                 msgs.push({ phone: getWaNum(t.phone), text: encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। দ্রুত দিন।`) });
              }
          });
       });
       if(msgs.length===0){ alert('সবাই হোমওয়ার্ক দিয়েছেন 🎉'); return; }
-      let i=0; function openNext(){ if(i>=msgs.length) return; window.open('https://wa.me/'+msgs[i].phone.replace(/^880/,'0')+'?text='+msgs[i].text,'_blank'); i++; if(i<msgs.length) setTimeout(openNext,1200); }
+      let i=0; function openNext(){ if(i>=msgs.length) return; window.open('https://wa.me/'+msgs[i].phone+'?text='+msgs[i].text,'_blank'); i++; if(i<msgs.length) setTimeout(openNext,1200); }
       openNext();
     }
 
