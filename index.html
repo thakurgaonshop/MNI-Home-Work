@@ -3,657 +3,706 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#1a0533">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="HW Entry">
-  <meta name="description" content="শিক্ষক হোমওয়ার্ক এন্ট্রি অ্যাপ">
-  <title>হোমওয়ার্ক এন্ট্রি</title>
+  <title>Smart School Homework System</title>
   <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-32.png">
+  <meta name="theme-color" content="#1a0533">
+  
+  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-<style>
-:root {
-  --bg:        #f0f4ff;
-  --surface:   #ffffff;
-  --primary:   #4f35d4;
-  --primary2:  #7c3aed;
-  --accent:    #06b6d4;
-  --gold:      #f59e0b;
-  --success:   #10b981;
-  --danger:    #ef4444;
-  --text:      #0f0a2e;
-  --muted:     #64748b;
-  --border:    #e2e8f0;
-  --card-shadow: 0 8px 32px rgba(79,53,212,0.10);
-  --radius:    20px;
-}
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Hind Siliguri', 'Noto Serif Bengali', sans-serif;
-  background: var(--bg);
-  min-height: 100vh;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  overflow-x: hidden;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0; z-index: 0; pointer-events: none;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124,58,237,0.18) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(6,182,212,0.14) 0%, transparent 60%);
-}
+  <style>
+    /* =========================================
+       GLOBAL & HOME SCREEN CSS
+       ========================================= */
+    body { margin: 0; padding: 0; background: #f0f4ff; font-family: 'Hind Siliguri', sans-serif; -webkit-tap-highlight-color: transparent; }
+    * { box-sizing: border-box; }
 
-/* ── PWA BANNERS ── */
-#installBanner {
-  display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 10000;
-  background: linear-gradient(90deg, #1a0533, #4f35d4);
-  color: white; padding: 14px 20px;
-  align-items: center; gap: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-  animation: slideDown 0.4s ease;
-}
-#installBanner.show { display: flex; }
-@keyframes slideDown { from{transform:translateY(-100%)} to{transform:translateY(0)} }
-#installBanner .ib-icon { font-size: 26px; flex-shrink: 0; }
-#installBanner .ib-text { flex: 1; font-size: 13px; line-height: 1.4; }
-#installBanner .ib-text strong { display: block; font-size: 14px; }
-.btn-install { background: var(--gold); color: #1a0533; border: none; padding: 8px 16px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 700; cursor: pointer; }
-.btn-install-dismiss { background: rgba(255,255,255,0.15); color: white; border: none; padding: 8px 12px; border-radius: 10px; font-family: inherit; font-size: 13px; cursor: pointer; }
-#offlineBanner { display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 9999; background: var(--danger); color: white; text-align: center; padding: 10px; font-size: 14px; font-weight: 600; font-family: inherit; }
-#offlineBanner.show { display: block; }
+    /* Top Navigation Bar */
+    .top-nav { display: flex; align-items: center; padding: 12px 16px; background: #1a0533; color: white; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    .btn-home { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 8px 16px; border-radius: 20px; color: white; font-weight: 700; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 6px; }
+    .nav-title { margin: 0 0 0 15px; font-family: 'Noto Serif Bengali', serif; font-size: 18px; flex: 1; font-weight: 700; }
 
-#iosGuide { display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 10000; background: white; border-radius: 24px 24px 0 0; padding: 30px 24px 40px; box-shadow: 0 -10px 40px rgba(0,0,0,0.2); animation: slideUp 0.4s ease; }
-#iosGuide.show { display: block; }
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-#iosGuide h3 { font-size: 20px; color: var(--text); margin-bottom: 20px; text-align: center; }
-.ios-step { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
-.ios-step-num { background: var(--primary); color: white; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0; }
-.ios-step-text { font-size: 15px; color: #334155; line-height: 1.5; }
-.btn-ios-close { width: 100%; margin-top: 20px; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 14px; font-family: inherit; font-size: 16px; font-weight: 700; cursor: pointer; }
+    /* Home Screen Design */
+    #homeScreen { min-height: 100vh; display: flex; flex-direction: column; }
+    .hero-section { background: linear-gradient(135deg, #1a0533 0%, #4f35d4 55%, #7c3aed 100%); padding: 50px 20px 40px; text-align: center; color: white; border-radius: 0 0 32px 32px; box-shadow: 0 10px 30px rgba(79,53,212,0.3); }
+    .hero-icon { font-size: 50px; background: rgba(255,255,255,0.15); display: inline-flex; width: 80px; height: 80px; align-items: center; justify-content: center; border-radius: 24px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.2); }
+    .hero-title { font-family: 'Noto Serif Bengali', serif; font-size: 26px; font-weight: 700; margin: 0 0 5px; }
+    .hero-sub { font-size: 14px; opacity: 0.9; }
 
-/* ── WRAPPER ── */
-#hwApp {
-  position: relative; z-index: 1;
-  max-width: 860px; margin: 0 auto;
-  padding: 0 16px 40px;
-  font-family: 'Hind Siliguri', 'Noto Serif Bengali', sans-serif;
-}
+    .menu-grid { padding: 30px 20px; display: flex; flex-direction: column; gap: 16px; flex: 1; }
+    .menu-card { background: white; border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 16px; box-shadow: 0 10px 25px rgba(79,53,212,0.08); border: 1px solid rgba(79,53,212,0.1); cursor: pointer; transition: all 0.3s; }
+    .menu-card:active { transform: scale(0.97); }
+    .mc-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; flex-shrink: 0; box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+    .mc-text h3 { margin: 0 0 4px; font-family: 'Noto Serif Bengali', serif; font-size: 18px; color: #0f0a2e; }
+    .mc-text p { margin: 0; font-size: 13px; color: #64748b; }
 
-/* ── HEADER ── */
-.f-header {
-  background: linear-gradient(135deg, #1a0533 0%, #4f35d4 55%, #7c3aed 100%);
-  border-radius: 0 0 36px 36px;
-  padding: 54px 24px 80px;
-  text-align: center;
-  position: relative; overflow: hidden;
-  box-shadow: 0 20px 60px rgba(79,53,212,0.35);
-  margin: 0 -16px 0;
-}
-.f-header::before {
-  content: '';
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(circle at 15% 50%, rgba(255,255,255,0.12) 0%, transparent 40%),
-    radial-gradient(circle at 85% 20%, rgba(6,182,212,0.2) 0%, transparent 40%);
-  pointer-events: none;
-}
-.f-header::after {
-  content: '';
-  position: absolute; top: -60px; right: -60px;
-  width: 200px; height: 200px; border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.08); pointer-events: none;
-}
-.hdr-ring {
-  position: absolute; bottom: -40px; left: -40px;
-  width: 160px; height: 160px; border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.06);
-}
-.f-logo-wrap {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 80px; height: 80px; border-radius: 24px;
-  background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.25);
-  font-size: 44px; margin-bottom: 18px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-}
-.f-school { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.3; font-family: 'Noto Serif Bengali', serif; }
-.f-sub {
-  display: inline-block; margin-top: 12px;
-  font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.9);
-  background: rgba(255,255,255,0.15); backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.2); padding: 6px 18px; border-radius: 30px;
-}
-.f-version {
-  position: absolute; top: 18px; right: 20px;
-  font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.1); padding: 4px 10px; border-radius: 20px;
-  border: 1px solid rgba(255,255,255,0.15);
-}
+    /* =========================================
+       USER BAR (Welcome & Logout)
+       ========================================= */
+    .user-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 13px 18px; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(79,53,212,0.08); border: 1px solid rgba(79,53,212,0.08); }
+    .user-info { display: flex; align-items: center; gap: 11px; }
+    .user-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(79,53,212,0.25); flex-shrink: 0; color: white; }
+    .user-text-sm { font-size: 11px; color: #64748b; font-weight: 500; }
+    .user-text-lg { font-size: 16px; color: #0f0a2e; font-weight: 700; font-family: 'Noto Serif Bengali', serif; }
+    .btn-logout { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 11px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: 'Hind Siliguri', sans-serif; transition: 0.3s; }
+    .btn-logout:hover { background: #fee2e2; }
 
-/* ── LOGIN ── */
-#loginSection {
-  background: rgba(255,255,255,0.97); backdrop-filter: blur(20px);
-  border-radius: 28px; padding: 40px 32px 36px;
-  max-width: 400px; margin: -52px auto 28px;
-  box-shadow: 0 24px 64px rgba(79,53,212,0.18), 0 2px 8px rgba(0,0,0,0.06);
-  border: 1px solid rgba(255,255,255,0.9);
-  position: relative; z-index: 10; text-align: center;
-}
-.login-avatar {
-  width: 64px; height: 64px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary), var(--primary2));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 30px; margin: 0 auto 18px;
-  box-shadow: 0 8px 24px rgba(79,53,212,0.3);
-}
-#loginSection h2 { font-size: 22px; color: var(--text); margin-bottom: 4px; font-weight: 700; font-family: 'Noto Serif Bengali', serif; }
-.login-sub { font-size: 13px; color: var(--muted); margin-bottom: 26px; }
-.input-wrap { position: relative; margin-bottom: 14px; }
-.input-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 18px; pointer-events: none; }
-.login-input {
-  width: 100%; padding: 16px 20px 16px 46px;
-  border-radius: 14px; border: 2px solid var(--border);
-  background: #f8fafc; font-size: 16px;
-  font-family: 'Hind Siliguri', inherit; transition: all 0.3s; color: var(--text);
-}
-.login-input:focus { border-color: var(--primary); background: white; outline: none; box-shadow: 0 0 0 4px rgba(79,53,212,0.12); }
-.btn-login {
-  width: 100%; padding: 17px;
-  background: linear-gradient(135deg, var(--primary), var(--primary2));
-  color: white; border: none; border-radius: 14px;
-  font-size: 17px; font-weight: 700; font-family: 'Hind Siliguri', inherit;
-  cursor: pointer; box-shadow: 0 8px 24px rgba(79,53,212,0.35);
-  transition: all 0.3s; margin-top: 6px;
-}
-.btn-login:hover { transform: translateY(-2px); box-shadow: 0 14px 32px rgba(79,53,212,0.45); }
+    /* =========================================
+       THAKURGAON SHOP FOOTER AD CSS
+       ========================================= */
+    .global-footer-wrap { padding: 0 16px 20px; margin-top: 20px; }
+    .global-footer { background: linear-gradient(135deg, #181d36, #211c47); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+    .global-footer::before { content: ''; position: absolute; right: -30px; top: -30px; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(245,158,11,0.15), transparent); pointer-events: none; }
+    .gf-logo { width: 60px; height: 60px; background: linear-gradient(135deg, #2563eb, #06b6d4); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 32px; flex-shrink: 0; box-shadow: 0 6px 15px rgba(0,0,0,0.3); z-index: 1; }
+    .gf-content { flex: 1; z-index: 1; }
+    .gf-powered { color: #f59e0b; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 4px; }
+    .gf-title { color: white; font-size: 16px; font-weight: 700; font-family: 'Noto Serif Bengali', serif; margin-bottom: 4px; line-height: 1.2; }
+    .gf-sub { color: #a1a1aa; font-size: 11px; margin-bottom: 10px; line-height: 1.4; }
+    .gf-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+    .gf-badge { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 3px 8px; border-radius: 20px; font-size: 10px; color: #d4d4d8; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+    .gf-btn { background: #f59e0b; color: #1a0533; border: none; padding: 10px 18px; border-radius: 10px; font-weight: 700; font-size: 13px; cursor: pointer; white-space: nowrap; z-index: 1; }
+    @media(max-width: 580px){ .global-footer { flex-direction: column; align-items: flex-start; } .gf-btn { width: 100%; text-align: center; margin-top: 5px; } }
 
-/* ── USER BAR ── */
-.user-bar {
-  display: flex; justify-content: space-between; align-items: center;
-  background: var(--surface); padding: 14px 20px; border-radius: 18px; margin-bottom: 20px;
-  box-shadow: 0 2px 12px rgba(79,53,212,0.08); border: 1px solid rgba(79,53,212,0.08);
-}
-.user-info { display: flex; align-items: center; gap: 12px; }
-.user-avatar {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  width: 44px; height: 44px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center; font-size: 22px;
-  box-shadow: 0 4px 12px rgba(79,53,212,0.25);
-}
-.user-text-sm { font-size: 12px; color: var(--muted); font-weight: 500; }
-.user-text-lg { font-size: 17px; color: var(--text); font-weight: 700; font-family: 'Noto Serif Bengali', serif; }
-.btn-logout { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; padding: 9px 18px; border-radius: 12px; font-family: inherit; font-weight: 700; font-size: 13px; cursor: pointer; transition: 0.3s; }
-.btn-logout:hover { background: #fee2e2; }
+    /* Views */
+    .app-view { display: none; min-height: 80vh; padding: 20px 16px; }
+    
+    /* Common Login */
+    .login-section { background: white; border-radius: 26px; padding: 30px 24px; max-width: 400px; margin: 20px auto 24px; box-shadow: 0 15px 40px rgba(79,53,212,0.1); text-align: center; }
+    .login-avatar { font-size: 40px; margin-bottom: 10px; width: 60px; height: 60px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; }
+    .login-section h2 { font-size: 20px; color: #0f172a; margin-bottom: 20px; font-family: 'Noto Serif Bengali', serif; }
+    .login-input { width: 100%; padding: 14px; border-radius: 13px; border: 2px solid #e2e8f0; margin-bottom: 12px; background: #f8fafc; font-size: 15px; outline: none; transition: 0.3s; }
+    .login-input:focus { border-color: #4f35d4; }
+    .btn-login { width: 100%; padding: 15px; background: linear-gradient(135deg, #4f35d4, #7c3aed); color: white; border: none; border-radius: 13px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s;}
+    
+    /* Common Cards */
+    .f-card { background: white; border-radius: 18px; box-shadow: 0 8px 32px rgba(79,53,212,0.10); margin-bottom: 16px; overflow: hidden; border: 1px solid rgba(79,53,212,0.07); }
+    .f-card-title { background: #f8faff; border-bottom: 1px solid #e2e8f0; padding: 16px 20px; font-size: 16px; font-weight: 700; font-family: 'Noto Serif Bengali', serif; display: flex; align-items: center; gap: 10px; }
+    .f-card-body { padding: 20px; }
+    .f-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:580px){ .f-grid { grid-template-columns:1fr; } }
+    .f-field label { display: block; font-size: 12px; font-weight: 700; color: #4f35d4; margin-bottom: 7px; }
+    .f-field input, .f-field select { width: 100%; padding: 13px 16px; border-radius: 12px; border: 2px solid #e2e8f0; background: #f8faff; font-size: 15px; outline: none; }
+    
+    /* Entry Specific */
+    .subj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 15px;}
+    @media(max-width:600px){ .subj-grid { grid-template-columns: 1fr; } }
+    .subj-item { border: 2px solid #e2e8f0; border-radius: 14px; overflow: hidden; background: #fafbff; }
+    .subj-head { padding: 11px 14px; background: #f1f5f9; font-weight: 700; font-size: 13px; font-family: 'Noto Serif Bengali', serif; display: flex; justify-content: space-between;}
+    .subj-ta { width: 100%; min-height: 85px; border: none; padding: 12px 14px; font-size: 14px; resize: vertical; outline: none; background: transparent; font-family: 'Noto Serif Bengali', serif; }
+    .btn-submit { width: 100%; padding: 17px; background: linear-gradient(135deg, #1a0533, #4f35d4); color: white; border: none; border-radius: 16px; font-size: 17px; font-weight: 700; cursor: pointer; }
 
-/* ── CARDS ── */
-.f-card {
-  background: var(--surface); border-radius: var(--radius);
-  box-shadow: var(--card-shadow); border: 1px solid rgba(79,53,212,0.07);
-  margin-bottom: 18px; overflow: hidden;
-}
-.f-card-title {
-  background: linear-gradient(90deg, rgba(79,53,212,0.06), rgba(124,58,237,0.03));
-  border-bottom: 1px solid rgba(79,53,212,0.08);
-  padding: 18px 22px; font-size: 17px; font-weight: 700;
-  color: var(--text); display: flex; align-items: center; gap: 12px;
-  font-family: 'Noto Serif Bengali', serif;
-}
-.card-title-icon {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(135deg, var(--primary), var(--primary2));
-  display: flex; align-items: center; justify-content: center; font-size: 18px;
-  box-shadow: 0 4px 10px rgba(79,53,212,0.25); flex-shrink: 0;
-}
-.f-card-body { padding: 22px; }
+    /* Dashboard Specific */
+    .d-summary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+    .d-pill { background: white; border-radius: 16px; padding: 16px 14px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;}
+    .d-pill-num { font-size: 24px; font-weight: 700; margin-bottom: 5px; }
+    .d-grid-dash { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+    @media(max-width:540px){ .d-grid-dash { grid-template-columns: 1fr; } }
+    .d-cls-card { background: white; border-radius: 18px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 2px solid #e2e8f0; overflow: hidden; }
+    .d-cls-head { padding: 13px 16px; display: flex; align-items: center; gap: 10px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; font-family: 'Noto Serif Bengali', serif; font-weight: 700;}
+    .d-cls-body { padding: 12px 16px 14px; }
+    .d-progress-wrap { background: #e2e8f0; border-radius: 30px; height: 8px; margin-bottom: 10px; }
+    .d-progress-bar { height: 100%; border-radius: 30px; }
+    .btn-wa { display:block; text-align:center; padding: 10px; background: #25d366; color: white; border-radius: 10px; font-weight: 700; text-decoration: none; font-size: 13px; }
+    .btn-wa-all { width: 100%; padding: 16px; margin-bottom: 20px; background: #1a0533; color: white; border: none; border-radius: 16px; font-weight: 700; cursor: pointer; }
+    .d-teacher-tbl { width: 100%; border-collapse: collapse; text-align: left; }
+    .d-teacher-tbl th, .d-teacher-tbl td { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+    .wa-link { background: #25d366; color: white; padding: 5px 10px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 11px;}
 
-.f-top-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-@media(max-width:580px){ .f-top-grid { grid-template-columns:1fr; gap:14px; } }
-.f-field label { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
-.f-field input, .f-field select {
-  width: 100%; padding: 15px 18px; font-family: 'Hind Siliguri', inherit;
-  font-size: 16px; color: var(--text); background: #f8faff;
-  border: 2px solid rgba(79,53,212,0.15); border-radius: 14px; outline: none; transition: all 0.3s;
-}
-.f-field select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%234f35d4' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat: no-repeat; background-position: right 14px center; padding-right: 42px;
-  cursor: pointer; -webkit-appearance: none; appearance: none;
-}
-.f-field input:focus, .f-field select:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 4px rgba(79,53,212,0.10); }
+    /* Print Specific */
+    .prev-tbl { width: 100%; border-collapse: collapse; margin-top:15px; background:white;}
+    .prev-tbl th, .prev-tbl td { padding: 12px; border: 1px solid #e2e8f0; text-align: left; font-family: 'Noto Serif Bengali', serif;}
+    .btn-print-big { width: 100%; padding: 18px; background: #059669; color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top:20px; }
+    .btn-blue { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 15px; }
 
-/* ── STATUS ── */
-.f-status-banner { border-radius: 16px; padding: 16px 22px; font-size: 15px; font-weight: 600; display: none; align-items: center; gap: 14px; margin-bottom: 18px; }
-.f-status-banner.show { display: flex; }
-.f-status-banner.partial { background: #fff7ed; color: #9a3412; border: 1.5px solid #fcd34d; }
-.f-status-banner.done    { background: #ecfdf5; color: #065f46; border: 1.5px solid #6ee7b7; }
-.f-status-icon { font-size: 26px; flex-shrink: 0; }
-.f-status-text { flex: 1; line-height: 1.5; font-family: 'Noto Serif Bengali', serif; }
-
-/* ── SUBJECTS ── */
-.subj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-@media(max-width:600px){ .subj-grid { grid-template-columns:1fr; } }
-.subj-item { border: 2px solid rgba(79,53,212,0.12); border-radius: 16px; overflow: hidden; transition: all 0.3s; background: #fafbff; }
-.subj-item:focus-within { border-color: var(--primary); box-shadow: 0 8px 24px rgba(79,53,212,0.15); transform: translateY(-2px); }
-.subj-item.already-submitted { border-color: var(--gold); background: #fffbeb; }
-.subj-head {
-  padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
-  background: linear-gradient(90deg, rgba(79,53,212,0.06), rgba(124,58,237,0.03));
-  border-bottom: 1px solid rgba(79,53,212,0.08);
-}
-.subj-item.already-submitted .subj-head { background: #fef3c7; border-bottom: 1px solid #fde68a; }
-.subj-name { font-size: 14px; font-weight: 700; color: var(--text); display: flex; align-items: center; gap: 8px; font-family: 'Noto Serif Bengali', serif; }
-.subj-icon { font-size: 18px; }
-.badge-submitted { background: linear-gradient(135deg, var(--success), #059669); color: white; border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-.subj-ta { width: 100%; min-height: 88px; border: none; padding: 14px 16px; font-family: 'Noto Serif Bengali', serif; font-size: 15px; resize: vertical; outline: none; background: transparent; color: #334155; line-height: 1.7; }
-
-/* ── SUBMIT ── */
-.btn-submit {
-  width: 100%; padding: 19px;
-  background: linear-gradient(135deg, #1a0533 0%, var(--primary) 50%, var(--primary2) 100%);
-  color: white; border: none; border-radius: 18px;
-  font-family: 'Hind Siliguri', inherit; font-size: 18px; font-weight: 700;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
-  box-shadow: 0 12px 32px rgba(79,53,212,0.35); transition: all 0.3s; overflow: hidden; position: relative;
-}
-.btn-submit::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-  transform: translateX(-100%); transition: transform 0.5s;
-}
-.btn-submit:hover:not(:disabled)::before { transform: translateX(100%); }
-.btn-submit:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 18px 40px rgba(79,53,212,0.45); }
-.btn-submit:disabled { background: linear-gradient(135deg, #94a3b8, #64748b); box-shadow: none; cursor: not-allowed; }
-
-/* ── TOAST ── */
-.f-toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(20px); min-width: 300px; padding: 16px 24px; border-radius: 16px; font-size: 15px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; z-index: 9999; box-shadow: 0 12px 40px rgba(0,0,0,0.2); font-family: 'Noto Serif Bengali', serif; }
-.f-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.f-toast.success { background: linear-gradient(135deg, var(--success), #059669); color: white; }
-.f-toast.error   { background: linear-gradient(135deg, var(--danger), #dc2626); color: white; }
-
-.f-loading { text-align: center; padding: 40px; color: var(--muted); font-family: 'Noto Serif Bengali', serif; }
-.spin-md { width: 44px; height: 44px; border: 4px solid rgba(79,53,212,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 15px; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ══════════════════════════════════════════
-   FOOTER AD BANNER — PREMIUM
-══════════════════════════════════════════ */
-.footer-ad {
-  margin-top: 28px;
-  border-radius: 22px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1a0533 100%);
-  padding: 24px; position: relative; overflow: hidden;
-  box-shadow: 0 16px 48px rgba(15,23,42,0.3);
-  border: 1px solid rgba(255,255,255,0.08);
-  cursor: pointer; transition: transform 0.3s, box-shadow 0.3s;
-  text-decoration: none; display: block;
-}
-.footer-ad:hover { transform: translateY(-3px); box-shadow: 0 22px 60px rgba(15,23,42,0.4); }
-.footer-ad::before {
-  content: ''; position: absolute; top: -60px; right: -60px;
-  width: 200px; height: 200px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(79,53,212,0.5), transparent 70%); pointer-events: none;
-}
-.footer-ad::after {
-  content: ''; position: absolute; bottom: -40px; left: -40px;
-  width: 150px; height: 150px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(6,182,212,0.35), transparent 70%); pointer-events: none;
-}
-.ad-inner { position: relative; z-index: 1; display: flex; align-items: center; gap: 18px; }
-.ad-icon-wrap {
-  width: 60px; height: 60px; border-radius: 18px;
-  background: linear-gradient(135deg, var(--primary), var(--accent));
-  display: flex; align-items: center; justify-content: center; font-size: 30px; flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(79,53,212,0.4);
-}
-.ad-text { flex: 1; }
-.ad-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; color: var(--gold); text-transform: uppercase; margin-bottom: 5px; }
-.ad-title { font-size: 17px; font-weight: 700; color: white; font-family: 'Noto Serif Bengali', serif; line-height: 1.3; margin-bottom: 6px; }
-.ad-desc { font-size: 12px; color: rgba(255,255,255,0.68); line-height: 1.5; }
-.ad-badges { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
-.ad-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.15); }
-.ad-cta-col { flex-shrink: 0; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.ad-cta {
-  background: linear-gradient(135deg, var(--gold), #d97706);
-  color: #1a0533; border: none; padding: 11px 18px;
-  border-radius: 13px; font-weight: 700; font-size: 13px;
-  cursor: pointer; font-family: inherit; white-space: nowrap;
-  box-shadow: 0 4px 14px rgba(245,158,11,0.4); transition: all 0.3s;
-}
-.ad-cta:hover { transform: scale(1.05); }
-.ad-arrow { font-size: 20px; color: rgba(255,255,255,0.4); }
-
-.footer-copy { text-align: center; padding: 14px 0 6px; font-size: 12px; color: #94a3b8; }
-.footer-copy span { color: var(--primary); font-weight: 600; }
-
-@media(max-width:600px){
-  #hwApp { padding: 0 12px 32px; }
-  .f-header { padding: 44px 18px 70px; border-radius: 0 0 28px 28px; }
-  .f-school { font-size: 22px; }
-  #loginSection { margin: -44px auto 22px; padding: 32px 20px; }
-  .ad-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
-  .ad-cta-col { width: 100%; flex-direction: row; justify-content: space-between; }
-  .ad-cta { flex: 1; text-align: center; padding: 12px; font-size: 14px; }
-  .btn-submit { position: sticky; bottom: 10px; z-index: 100; }
-}
-</style>
+    /* Toast */
+    .f-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); min-width: 280px; padding: 14px 22px; border-radius: 14px; font-size: 14px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; z-index: 99999; box-shadow: 0 12px 40px rgba(0,0,0,0.2); font-family: 'Noto Serif Bengali', serif; color: white; background: #10b981;}
+    .f-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
 </head>
 <body>
 
-<div id="offlineBanner">⚠️ ইন্টারনেট সংযোগ নেই</div>
-
-<div id="installBanner">
-  <div class="ib-icon">📲</div>
-  <div class="ib-text"><strong>অ্যাপ ইনস্টল করুন</strong>হোম স্ক্রিনে যোগ করুন — বিজ্ঞাপন নেই!</div>
-  <div style="display:flex;gap:8px;flex-shrink:0;">
-    <button class="btn-install" id="btnInstall">ইনস্টল</button>
-    <button class="btn-install-dismiss" id="btnDismiss">✕</button>
-  </div>
-</div>
-
-<div id="iosGuide">
-  <h3>📲 iPhone-এ ইনস্টল করুন</h3>
-  <div class="ios-step"><div class="ios-step-num">১</div><div class="ios-step-text">Safari-এর <strong>Share বাটন</strong> (□↑) চাপুন</div></div>
-  <div class="ios-step"><div class="ios-step-num">২</div><div class="ios-step-text"><strong>"Add to Home Screen"</strong> চাপুন</div></div>
-  <div class="ios-step"><div class="ios-step-num">৩</div><div class="ios-step-text"><strong>"Add"</strong> চাপুন ✅</div></div>
-  <button class="btn-ios-close" onclick="document.getElementById('iosGuide').classList.remove('show')">বুঝেছি ✓</button>
-</div>
-
-<!-- ══════════ MAIN APP ══════════ -->
-<div id="hwApp">
-
-  <div class="f-header">
-    <div class="hdr-ring"></div>
-    <div class="f-version">v11 ✦</div>
-    <div class="f-logo-wrap">🏫</div>
-    <div class="f-school" id="fSchoolName">লোড হচ্ছে...</div>
-    <div class="f-sub" id="fSubTitle"></div>
-  </div>
-
-  <div id="loginSection">
-    <div class="login-avatar">👨‍🏫</div>
-    <h2 id="loginHeadTxt"></h2>
-    <p class="login-sub">আপনার তথ্য দিয়ে প্রবেশ করুন</p>
-    <div class="input-wrap"><span class="input-icon">👤</span><input type="text" id="lUser" class="login-input" placeholder="" autocomplete="username"></div>
-    <div class="input-wrap"><span class="input-icon">🔒</span><input type="password" id="lPass" class="login-input" placeholder="" autocomplete="current-password"></div>
-    <button class="btn-login" id="btnLoginBtn" onclick="doLogin()"></button>
-  </div>
-
-  <div id="mainSection" style="display:none;">
-    <div class="user-bar">
-      <div class="user-info">
-        <div class="user-avatar">👨‍🏫</div>
-        <div><div class="user-text-sm" id="welcomeLbl"></div><div class="user-text-lg" id="loggedUser"></div></div>
-      </div>
-      <button class="btn-logout" id="btnLogoutBtn" onclick="doLogout()"></button>
+  <!-- =========================================
+       1. HOME SCREEN
+       ========================================= -->
+  <div id="homeScreen">
+    <div class="hero-section">
+      <div class="hero-icon">🏫</div>
+      <h1 class="hero-title">মারকাযুন নূর আল ইসলামি</h1>
+      <p class="hero-sub">স্মার্ট স্কুল ম্যানেজমেন্ট পোর্টাল</p>
     </div>
 
-    <div class="f-card">
-      <div class="f-card-title"><div class="card-title-icon">📅</div><span id="fStep1Title"></span></div>
-      <div class="f-card-body">
-        <div class="f-top-grid">
-          <div class="f-field"><label id="fLblDate"></label><input type="text" id="fDate" inputmode="numeric"></div>
-          <div class="f-field"><label id="fLblClass"></label><select id="fClass" onchange="onClassOrDateChange()"></select></div>
+    <div class="menu-grid">
+      <div class="menu-card" onclick="openApp('entry')">
+        <div class="mc-icon" style="background: linear-gradient(135deg, #4f35d4, #7c3aed);">📝</div>
+        <div class="mc-text">
+          <h3>হোমওয়ার্ক এন্ট্রি</h3>
+          <p>শিক্ষকদের ডাটা এন্ট্রি পোর্টাল</p>
+        </div>
+      </div>
+
+      <div class="menu-card" onclick="openApp('print')">
+        <div class="mc-icon" style="background: linear-gradient(135deg, #2563eb, #06b6d4);">🖨️</div>
+        <div class="mc-text">
+          <h3>হোমওয়ার্ক প্রিন্ট</h3>
+          <p>ডায়েরি প্রিন্ট আউটপুট সিস্টেম</p>
+        </div>
+      </div>
+
+      <div class="menu-card" onclick="openApp('dash')">
+        <div class="mc-icon" style="background: linear-gradient(135deg, #059669, #10b981);">📊</div>
+        <div class="mc-text">
+          <h3>ড্যাশবোর্ড</h3>
+          <p>অ্যাডমিন মনিটরিং ও রিমাইন্ডার</p>
         </div>
       </div>
     </div>
 
-    <div class="f-status-banner" id="fStatusBanner">
-      <span class="f-status-icon" id="fStatusIcon"></span><span class="f-status-text" id="fStatusText"></span>
+    <!-- Global Footer (Home) -->
+    <div id="footerPlaceholderHome"></div>
+  </div>
+
+
+  <!-- =========================================
+       2. APP CONTAINER (Inner Pages)
+       ========================================= -->
+  <div id="appContainer" style="display: none;">
+    
+    <!-- Top Navigation -->
+    <div class="top-nav">
+      <button class="btn-home" onclick="goHome()">🏠 হোম</button>
+      <div class="nav-title" id="appTitle">লোডিং...</div>
     </div>
 
-    <div class="f-card">
-      <div class="f-card-title"><div class="card-title-icon">✍️</div><span id="fStep2Title"></span></div>
-      <div class="f-card-body" id="subjectContainer">
-        <div style="text-align:center;padding:40px;color:var(--muted);font-family:'Noto Serif Bengali',serif;" id="placeholderSelect"></div>
+    <!-- 🟢 A. ENTRY VIEW -->
+    <div id="view-entry" class="app-view">
+      
+      <div id="eLoginSection" class="login-section">
+        <div class="login-avatar" style="background: linear-gradient(135deg, #4f35d4, #7c3aed); color:white;">👨‍🏫</div>
+        <h2>শিক্ষক লগইন</h2>
+        <input type="text" id="eUser" class="login-input" placeholder="ইউজারনেম">
+        <input type="password" id="ePass" class="login-input" placeholder="পাসওয়ার্ড">
+        <button id="eLoginBtn" class="btn-login" onclick="doEntryLogin()">লগ-ইন করুন</button>
+      </div>
+
+      <div id="eMainSection" style="display:none;">
+        
+        <!-- User Bar with logged in Name -->
+        <div class="user-bar">
+          <div class="user-info">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #4f35d4, #7c3aed);">👨‍🏫</div>
+            <div>
+              <div class="user-text-sm">স্বাগতম,</div>
+              <div class="user-text-lg" id="loggedUserEntry"></div>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="performLogout()">← লগ-আউট</button>
+        </div>
+
+        <div class="f-card">
+          <div class="f-card-title">📅 শ্রেণি ও তারিখ নির্বাচন</div>
+          <div class="f-card-body">
+            <div class="f-grid">
+              <div class="f-field"><label>তারিখ (DD-MM-YYYY)</label><input type="text" id="eDate"></div>
+              <div class="f-field"><label>শ্রেণি</label><select id="eClass" onchange="onEntryClassChange()"></select></div>
+            </div>
+          </div>
+        </div>
+        <div class="f-card">
+          <div class="f-card-title">✍️ হোমওয়ার্ক লিখুন</div>
+          <div class="f-card-body" id="eSubjectContainer">
+            <p style="text-align:center; color:#64748b;">উপরে শ্রেণি বাছাই করুন</p>
+          </div>
+        </div>
+        <button class="btn-submit" id="eSubmitBtn" onclick="submitEntryForm()" disabled>💾 হোমওয়ার্ক সেভ করুন</button>
       </div>
     </div>
 
-    <button class="btn-submit" id="fSubmitBtn" onclick="submitForm()" disabled>
-      <span style="font-size:22px;">💾</span><span id="btnText"></span>
-    </button>
-  </div>
 
-  <!-- ══ FOOTER AD BANNER ══ -->
-  <div class="footer-ad" onclick="window.open('https://thakurgaonshop.com','_blank')">
-    <div class="ad-inner">
-      <div class="ad-icon-wrap">🏫</div>
-      <div class="ad-text">
-        <div class="ad-label">✦ Powered by</div>
-        <div class="ad-title">Thakurgaon Shop Software System</div>
-        <div class="ad-desc">সম্পূর্ণ ডিজিটাল স্কুল ম্যানেজমেন্ট সিস্টেম — ওয়েবসাইট ও সফটওয়্যার এর জন্য যোগাযোগ করুন।</div>
-        <div class="ad-badges">
-          <span class="ad-badge">📊 দোকান POS</span>
-          <span class="ad-badge">✅ School Management</span>
-          <span class="ad-badge">💰 Inventory</span>
-          <span class="ad-badge">📚 Web Design</span>
-          <span class="ad-badge">📞 01811544992</span>
+    <!-- 🟢 B. DASHBOARD VIEW -->
+    <div id="view-dash" class="app-view">
+      
+      <div id="dLoginSection" class="login-section">
+        <div class="login-avatar" style="background: linear-gradient(135deg, #059669, #10b981); color:white;">🛡️</div>
+        <h2>অ্যাডমিন লগইন</h2>
+        <input type="text" id="dUser" class="login-input" placeholder="ইউজারনেম">
+        <input type="password" id="dPass" class="login-input" placeholder="পাসওয়ার্ড">
+        <button id="dLoginBtn" class="btn-login" style="background: linear-gradient(135deg, #059669, #10b981);" onclick="doDashLogin()">লগ-ইন করুন</button>
+      </div>
+
+      <div id="dDashBody" style="display:none;">
+        
+        <!-- User Bar with logged in Name -->
+        <div class="user-bar">
+          <div class="user-info">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #059669, #10b981);">🛡️</div>
+            <div>
+              <div class="user-text-sm">অ্যাডমিন,</div>
+              <div class="user-text-lg" id="loggedUserDash"></div>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="performLogout()">← লগ-আউট</button>
+        </div>
+
+        <div class="f-card">
+          <div class="f-card-body" style="display:flex; gap:10px; align-items:flex-end;">
+            <div class="f-field" style="flex:1; margin:0;"><label>তারিখ নির্বাচন করুন</label><input type="text" id="dDate"></div>
+            <button class="btn-load btn-login" id="dBtnLoad" style="width:auto; padding:13px 20px; background:#059669; border-radius:12px;" onclick="loadDashboard()">দেখুন</button>
+          </div>
+        </div>
+
+        <div class="d-summary">
+          <div class="d-pill"><div class="d-pill-num" id="dTotal" style="color:#4f35d4">—</div><div style="font-size:12px; color:#64748b;">মোট শ্রেণি</div></div>
+          <div class="d-pill"><div class="d-pill-num" id="dDone" style="color:#10b981">—</div><div style="font-size:12px; color:#64748b;">জমা দিয়েছে</div></div>
+          <div class="d-pill"><div class="d-pill-num" id="dMiss" style="color:#ef4444">—</div><div style="font-size:12px; color:#64748b;">বাকি আছে</div></div>
+        </div>
+
+        <button class="btn-wa-all" id="btnWaAll" onclick="sendDashAllMissing()" style="display:none;">💬 সব দেরিতে WhatsApp পাঠান</button>
+        <div class="d-grid-dash" id="dGrid"></div>
+        
+        <div class="f-card" id="dTeacherCard" style="display:none;">
+          <div class="f-card-title">👨‍🏫 শিক্ষকদের স্ট্যাটাস</div>
+          <div style="overflow-x:auto;">
+            <table class="d-teacher-tbl"><tbody id="dTeacherBody"></tbody></table>
+          </div>
         </div>
       </div>
-      <div class="ad-cta-col">
-        <button class="ad-cta">বিস্তারিত →</button>
-        <div class="ad-arrow">↗</div>
+    </div>
+
+
+    <!-- 🟢 C. PRINT VIEW -->
+    <div id="view-print" class="app-view">
+      
+      <div id="pLoginSection" class="login-section">
+        <div class="login-avatar" style="background: linear-gradient(135deg, #2563eb, #06b6d4); color:white;">🖨️</div>
+        <h2>অ্যাডমিন লগইন</h2>
+        <input type="text" id="pUser" class="login-input" placeholder="ইউজারনেম">
+        <input type="password" id="pPass" class="login-input" placeholder="পাসওয়ার্ড">
+        <button id="pLoginBtn" class="btn-login" style="background: linear-gradient(135deg, #2563eb, #06b6d4);" onclick="doPrintLogin()">লগ-ইন করুন</button>
+      </div>
+
+      <div id="pPrintBody" style="display:none;">
+
+        <!-- User Bar with logged in Name -->
+        <div class="user-bar">
+          <div class="user-info">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #2563eb, #06b6d4);">🖨️</div>
+            <div>
+              <div class="user-text-sm">অ্যাডমিন,</div>
+              <div class="user-text-lg" id="loggedUserPrint"></div>
+            </div>
+          </div>
+          <button class="btn-logout" onclick="performLogout()">← লগ-আউট</button>
+        </div>
+
+        <div class="f-card">
+          <div class="f-card-title">📅 তারিখ ও শ্রেণি নির্বাচন</div>
+          <div class="f-card-body">
+            <div class="f-grid">
+              <div class="f-field"><label>তারিখ (DD-MM-YYYY)</label><input type="text" id="hDate"></div>
+              <div class="f-field"><label>শ্রেণি</label><select id="hClass"></select></div>
+            </div>
+            <button class="btn-blue" id="pBtnFetch" onclick="doPrintFetch()">হোমওয়ার্ক দেখুন</button>
+            
+            <table class="prev-tbl" id="hPrev" style="display:none;">
+              <thead><tr><th>বিষয়</th><th>হোমওয়ার্ক</th></tr></thead>
+              <tbody id="hPrevBody"></tbody>
+            </table>
+            
+            <button class="btn-print-big" id="hPrintBar" style="display:none;" onclick="doPrintOut()">🖨️ ডায়েরি A4-এ ৬ কপি প্রিন্ট করুন</button>
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Global Footer (Inner Pages) -->
+    <div id="footerPlaceholderApp"></div>
   </div>
 
-  <div class="footer-copy">© 2026 <span>Thakurgaon Shop Software Management</span> · সর্বস্বত্ব সংরক্ষিত</div>
+  <!-- Toast Notification -->
+  <div class="f-toast" id="globalToast">সফলভাবে সম্পন্ন হয়েছে!</div>
 
-  <div class="f-toast" id="fToast"></div>
-</div>
+  <!-- FOOTER TEMPLATE (Injected dynamically) -->
+  <template id="thFooterTemplate">
+    <div class="global-footer-wrap">
+      <div class="global-footer" onclick="window.open('https://thakurgaonshop.com','_blank')">
+        <div class="gf-logo">🏫</div>
+        <div class="gf-content">
+          <div class="gf-powered">✦ POWERED BY</div>
+          <div class="gf-title">Thakurgaon Shop Software System</div>
+          <div class="gf-sub">সম্পূর্ণ ডিজিটাল স্কুল ম্যানেজমেন্ট — হাজিরা, রেজাল্ট, বেতন ও নোটিশ একসাথে</div>
+          <div class="gf-badges">
+            <span class="gf-badge">📊 দোকান POS</span>
+            <span class="gf-badge">✅ School Mgmt</span>
+            <span class="gf-badge">💰 Inventory</span>
+            <span class="gf-badge">📚 Web Design</span>
+            <span class="gf-badge">📞 01811544992</span>
+          </div>
+        </div>
+        <button class="gf-btn">বিস্তারিত →</button>
+      </div>
+    </div>
+  </template>
 
-<!-- ══════════ SCRIPT ══════════ -->
-<script>
-var GAS_URL = 'https://script.google.com/macros/s/AKfycbymC4sKh_z08pmwgNNLFY1Wqm3Dch_wUxCzQ0Wa9k-pAMlxp0ql6CNrT-E8xiudXaaA/exec';
 
-var T = {
-  subTitle: 'শিক্ষক হোমওয়ার্ক এন্ট্রি',
-  loginHead: 'শিক্ষক লগ-ইন',
-  phUser: 'ইউজারনেম',
-  phPass: 'পাসওয়ার্ড',
-  btnLoginTxt: '🔑 লগ-ইন করুন',
-  btnWaitTxt: '⏳ অপেক্ষা করুন...',
-  welcomeTxt: 'স্বাগতম,',
-  logoutTxt: '← লগ-আউট',
-  step1: 'শ্রেণি ও তারিখ নির্বাচন',
-  step2: 'হোমওয়ার্ক লিখুন',
-  lblDate: '📅 তারিখ ★',
-  lblClass: '🏷️ শ্রেণি ★',
-  clsDef: '— বাছাই করুন —',
-  noPrev: 'ফাঁকা থাকলে লিখুন...',
-  badgeOK: '✔ জমা আছে',
-  btnSaveTxt: 'হোমওয়ার্ক সেভ করুন',
-  plsSelect: 'উপরে শ্রেণি বাছাই করুন',
-  loadingData: 'ডাটা আনা হচ্ছে...',
-  statusDone: 'সম্পূর্ণ হোমওয়ার্ক জমা আছে',
-  statusPart: 'আংশিক হোমওয়ার্ক জমা আছে',
-  noSubj: 'বিষয় নেই',
-  successMsg: '✅ সফলভাবে সেভ হয়েছে!'
-};
+  <!-- =========================================
+       JAVASCRIPT APP LOGIC
+       ========================================= -->
+  <script>
+    // ----------------------------------------------------
+    // ১. গ্লোবাল ভেরিয়েবল ও ফাংশন
+    // ----------------------------------------------------
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbymC4sKh_z08pmwgNNLFY1Wqm3Dch_wUxCzQ0Wa9k-pAMlxp0ql6CNrT-E8xiudXaaA/exec';
+    const SCHOOL_NAME = '\u09AE\u09BE\u09B0\u0995\u09BE\u09AF\u09BC\u09C1\u09A8 \u09A8\u09C2\u09B0 \u0986\u09B2 \u0987\u09B8\u09B2\u09BE\u09AE\u09BF';
+    let currentActiveApp = '';
 
-document.getElementById('fSubTitle').textContent = T.subTitle;
-document.getElementById('loginHeadTxt').textContent = T.loginHead;
-document.getElementById('lUser').placeholder = T.phUser;
-document.getElementById('lPass').placeholder = T.phPass;
-document.getElementById('btnLoginBtn').textContent = T.btnLoginTxt;
-document.getElementById('welcomeLbl').textContent = T.welcomeTxt;
-document.getElementById('btnLogoutBtn').textContent = T.logoutTxt;
-document.getElementById('fStep1Title').textContent = T.step1;
-document.getElementById('fStep2Title').textContent = T.step2;
-document.getElementById('fLblDate').textContent = T.lblDate;
-document.getElementById('fLblClass').textContent = T.lblClass;
-document.getElementById('btnText').textContent = T.btnSaveTxt;
-document.getElementById('placeholderSelect').textContent = T.plsSelect;
-
-var ICONS = { 'বাংলা':'📗','ইংরেজি':'📘','গণিত':'🔢','বিজ্ঞান':'🔬','ইসলাম':'☪️','কুরআন':'📖','আরবি':'✍️' };
-function getIcon(n){ for(var k in ICONS){ if(n.indexOf(k)>=0) return ICONS[k]; } return '📝'; }
-function today(){ var d=new Date(); return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear(); }
-function escHTML(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escAttr(s){ return s.replace(/"/g,'&quot;'); }
-
-var toastTimer;
-function showToast(msg,type){
-  var t=document.getElementById('fToast'); t.textContent=msg; t.className='f-toast '+type+' show';
-  clearTimeout(toastTimer); toastTimer=setTimeout(function(){ t.className='f-toast '+type; },4000);
-}
-
-function checkAuth(){
-  var teacher=localStorage.getItem('hw_teacher');
-  if(teacher){
-    document.getElementById('loginSection').style.display='none';
-    document.getElementById('mainSection').style.display='block';
-    document.getElementById('loggedUser').textContent=teacher;
-    loadConfig();
-  } else {
-    document.getElementById('loginSection').style.display='block';
-    document.getElementById('mainSection').style.display='none';
-  }
-}
-
-async function doLogin(){
-  var user=document.getElementById('lUser').value.trim();
-  var pass=document.getElementById('lPass').value.trim();
-  if(!user||!pass) return;
-  var btn=document.getElementById('btnLoginBtn');
-  btn.textContent=T.btnWaitTxt; btn.disabled=true;
-  try{
-    var res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass})});
-    var data=await res.json();
-    if(data.success){ localStorage.setItem('hw_teacher',data.teacher); checkAuth(); }
-    else { showToast(data.error,'error'); }
-  }catch(e){ showToast('Error: ইন্টারনেট সংযোগ চেক করুন','error'); }
-  btn.textContent=T.btnLoginTxt; btn.disabled=false;
-}
-
-function doLogout(){ localStorage.removeItem('hw_teacher'); document.getElementById('lPass').value=''; checkAuth(); }
-
-var prevData={};
-async function loadConfig(){
-  try{
-    var r=await fetch(GAS_URL+'?action=config');
-    var d=await r.json();
-    if(!d.success) throw new Error(d.error);
-    document.getElementById('fSchoolName').textContent=d.schoolName;
-    var sel=document.getElementById('fClass');
-    sel.innerHTML='<option value="">'+T.clsDef+'</option>';
-    d.classes.forEach(function(c){
-      var o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; o.dataset.subjects=JSON.stringify(c.subjects); sel.appendChild(o);
-    });
-  }catch(e){}
-}
-
-var checkTimer=null;
-function onClassOrDateChange(){ clearTimeout(checkTimer); checkTimer=setTimeout(checkExisting,400); }
-
-async function checkExisting(){
-  var date=document.getElementById('fDate').value.trim();
-  var sel=document.getElementById('fClass');
-  var tab=sel.value.trim();
-  var opt=sel.options[sel.selectedIndex];
-  renderSubjects(opt,{});
-  if(!tab||!date) return;
-  document.getElementById('fStatusBanner').classList.remove('show');
-  document.getElementById('subjectContainer').innerHTML='<div class="f-loading"><div class="spin-md"></div><p>'+T.loadingData+'</p></div>';
-  try{
-    var r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
-    var d=await r.json();
-    var existing={};
-    if(d.success&&d.found){ (d.subjects||[]).forEach(function(s){ if(s.homework.trim()) existing[s.subject]=s.homework.trim(); }); }
-    prevData[tab+'|'+date]=existing;
-    renderSubjects(opt,existing);
-    var keys=Object.keys(existing);
-    var banner=document.getElementById('fStatusBanner');
-    if(keys.length>0){
-      var allSubjects=[];
-      try{ allSubjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
-      var allDone=allSubjects.length>0&&keys.length>=allSubjects.length;
-      banner.className='f-status-banner show '+(allDone?'done':'partial');
-      document.getElementById('fStatusIcon').textContent=allDone?'✅':'⚠️';
-      document.getElementById('fStatusText').textContent=allDone?T.statusDone:T.statusPart;
+    function todayStr(){ 
+      let d = new Date(); 
+      return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear(); 
     }
-  }catch(e){ renderSubjects(opt,{}); }
-}
 
-function renderSubjects(opt,existing){
-  var container=document.getElementById('subjectContainer');
-  var submitBtn=document.getElementById('fSubmitBtn');
-  if(!opt||!opt.value){ container.innerHTML='<div style="text-align:center;padding:40px;color:var(--muted);font-family:\'Noto Serif Bengali\',serif;">'+T.plsSelect+'</div>'; submitBtn.disabled=true; return; }
-  var subjects=[];
-  try{ subjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
-  if(!subjects.length){ container.innerHTML='<p style="color:var(--danger);text-align:center;font-family:\'Noto Serif Bengali\',serif;">'+T.noSubj+'</p>'; submitBtn.disabled=true; return; }
-  var grid=document.createElement('div'); grid.className='subj-grid';
-  subjects.forEach(function(subj){
-    var prevHW=existing[subj]||'';
-    var hasExisting=!!prevHW;
-    var item=document.createElement('div');
-    item.className='subj-item'+(hasExisting?' already-submitted':'');
-    item.id='item_'+subj.replace(/\s+/g,'_');
-    var safeId='hw_'+subj.replace(/\s+/g,'_');
-    var badgeHTML=hasExisting?'<span class="badge-submitted">'+T.badgeOK+'</span>':'';
-    item.innerHTML='<div class="subj-head"><div class="subj-name"><span class="subj-icon">'+getIcon(subj)+'</span>'+escHTML(subj)+'</div>'+badgeHTML+'</div><textarea id="'+safeId+'" class="subj-ta" data-subject="'+escAttr(subj)+'" placeholder="'+escAttr(T.noPrev)+'">'+escHTML(prevHW)+'</textarea>';
-    item.querySelector('textarea').addEventListener('input',function(){
-      var it=document.getElementById(item.id);
-      if(this.value.trim()!==prevHW){ it.classList.add('has-new'); } else { it.classList.remove('has-new'); }
+    function showToast(msg) {
+      let t = document.getElementById('globalToast');
+      t.textContent = msg; t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ইনজেক্ট ফুটার
+    document.getElementById('footerPlaceholderHome').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
+    document.getElementById('footerPlaceholderApp').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
+
+    // ----------------------------------------------------
+    // ২. নেভিগেশন (PWA Routing)
+    // ----------------------------------------------------
+    function openApp(app) {
+      currentActiveApp = app;
+      document.getElementById('homeScreen').style.display = 'none';
+      document.getElementById('appContainer').style.display = 'block';
+      
+      document.getElementById('view-entry').style.display = app==='entry' ? 'block' : 'none';
+      document.getElementById('view-dash').style.display  = app==='dash'  ? 'block' : 'none';
+      document.getElementById('view-print').style.display = app==='print' ? 'block' : 'none';
+
+      if(app==='entry') { 
+        document.getElementById('appTitle').innerText='হোমওয়ার্ক এন্ট্রি'; 
+        document.getElementById('eDate').value = todayStr(); 
+        checkEntryAuth(); 
+      }
+      else if(app==='dash') { 
+        document.getElementById('appTitle').innerText='ড্যাশবোর্ড'; 
+        document.getElementById('dDate').value = todayStr(); 
+        checkDashAuth(); 
+      }
+      else if(app==='print') { 
+        document.getElementById('appTitle').innerText='হোমওয়ার্ক প্রিন্ট'; 
+        document.getElementById('hDate').value = todayStr(); 
+        checkPrintAuth(); 
+      }
+      history.pushState({app: app}, '', '#'+app);
+    }
+
+    function goHome() {
+      currentActiveApp = '';
+      document.getElementById('appContainer').style.display = 'none';
+      document.getElementById('homeScreen').style.display = 'flex';
+      history.pushState({app: 'home'}, '', window.location.pathname);
+    }
+
+    window.addEventListener('popstate', function(e) {
+      if(e.state && e.state.app && e.state.app !== 'home') { openApp(e.state.app); } 
+      else { goHome(); }
     });
-    grid.appendChild(item);
-  });
-  container.innerHTML=''; container.appendChild(grid); submitBtn.disabled=false;
-}
 
-async function submitForm(){
-  var date=document.getElementById('fDate').value.trim();
-  var tab=document.getElementById('fClass').value.trim();
-  var teacher=localStorage.getItem('hw_teacher')||'';
-  if(!date||!tab) return;
-  var textareas=document.querySelectorAll('#subjectContainer textarea[data-subject]');
-  var homeworks={}; var hasAny=false;
-  textareas.forEach(function(ta){ var val=ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
-  if(!hasAny) return;
-  var btn=document.getElementById('fSubmitBtn');
-  btn.disabled=true; document.getElementById('btnText').textContent=T.btnWaitTxt;
-  try{
-    var res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({tab:tab,date:date,homeworks:homeworks,teacher:teacher})});
-    var data=await res.json();
-    if(data.success){ showToast(T.successMsg,'success'); setTimeout(function(){ checkExisting(); },800); }
-  }catch(err){ showToast('Error: ইন্টারনেট সংযোগ চেক করুন','error'); }
-  finally{ btn.disabled=false; document.getElementById('btnText').textContent=T.btnSaveTxt; }
-}
+    function performLogout(){
+      if(currentActiveApp === 'entry') { localStorage.removeItem('hw_teacher'); checkEntryAuth(); }
+      else if(currentActiveApp === 'dash') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkDashAuth(); }
+      else if(currentActiveApp === 'print') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkPrintAuth(); }
+    }
 
-document.getElementById('fDate').addEventListener('change', onClassOrDateChange);
-document.getElementById('fDate').addEventListener('blur',   onClassOrDateChange);
-document.getElementById('fDate').value = today();
-checkAuth();
-</script>
+    // ----------------------------------------------------
+    // ৩. ENTRY APP LOGIC
+    // ----------------------------------------------------
+    let entryPrevData = {};
+    let entryCheckTimer = null;
 
-<script>
-if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js'); }); }
-function updateOnlineStatus(){ document.getElementById('offlineBanner').classList.toggle('show',!navigator.onLine); }
-window.addEventListener('online',updateOnlineStatus);
-window.addEventListener('offline',updateOnlineStatus);
-updateOnlineStatus();
-var deferredPrompt=null;
-window.addEventListener('beforeinstallprompt',function(e){
-  e.preventDefault(); deferredPrompt=e;
-  if(!localStorage.getItem('pwa_dismissed')){ setTimeout(function(){ document.getElementById('installBanner').classList.add('show'); },3000); }
-});
-document.getElementById('btnInstall').addEventListener('click',function(){
-  document.getElementById('installBanner').classList.remove('show');
-  if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(function(){ deferredPrompt=null; }); }
-});
-document.getElementById('btnDismiss').addEventListener('click',function(){
-  document.getElementById('installBanner').classList.remove('show'); localStorage.setItem('pwa_dismissed','1');
-});
-var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-var isStandalone=('standalone' in navigator)&&navigator.standalone;
-if(isIOS&&!isStandalone&&!localStorage.getItem('ios_guide_dismissed')){
-  setTimeout(function(){ document.getElementById('iosGuide').classList.add('show'); localStorage.setItem('ios_guide_dismissed','1'); },5000);
-}
-window.addEventListener('appinstalled',function(){ document.getElementById('installBanner').classList.remove('show'); deferredPrompt=null; });
-</script>
+    function checkEntryAuth(){
+      let teacher = localStorage.getItem('hw_teacher');
+      if(teacher){
+        document.getElementById('eLoginSection').style.display='none';
+        document.getElementById('eMainSection').style.display='block';
+        document.getElementById('loggedUserEntry').textContent = teacher; // নাম দেখাচ্ছে
+        loadEntryConfig();
+      } else {
+        document.getElementById('eLoginSection').style.display='block';
+        document.getElementById('eMainSection').style.display='none';
+      }
+    }
+
+    async function doEntryLogin(){
+      let user=document.getElementById('eUser').value.trim();
+      let pass=document.getElementById('ePass').value.trim();
+      if(!user||!pass) return;
+      let btn=document.getElementById('eLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+      try{
+        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'entry'})});
+        let data=await res.json();
+        if(data.success){ localStorage.setItem('hw_teacher',data.teacher); checkEntryAuth(); }
+        else { alert(data.error); }
+      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+    }
+
+    async function loadEntryConfig(){
+      try{
+        let r=await fetch(GAS_URL+'?action=config'); let d=await r.json();
+        let sel=document.getElementById('eClass'); sel.innerHTML='<option value="">— শ্রেণি বাছাই করুন —</option>';
+        d.classes.forEach(c => {
+          let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; 
+          o.dataset.subjects=JSON.stringify(c.subjects); sel.appendChild(o);
+        });
+      }catch(e){}
+    }
+
+    function onEntryClassChange(){ clearTimeout(entryCheckTimer); entryCheckTimer=setTimeout(checkEntryExisting, 400); }
+
+    async function checkEntryExisting(){
+      let date=document.getElementById('eDate').value.trim();
+      let sel=document.getElementById('eClass'); let tab=sel.value.trim();
+      let opt=sel.options[sel.selectedIndex];
+      renderEntrySubjects(opt, {});
+      if(!tab||!date) return;
+      document.getElementById('eSubjectContainer').innerHTML='<p style="text-align:center;">ডাটা আনা হচ্ছে...</p>';
+      try{
+        let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
+        let d=await r.json(); let existing={};
+        if(d.success&&d.found){ (d.subjects||[]).forEach(s=>{ if(s.homework.trim()) existing[s.subject]=s.homework.trim(); }); }
+        entryPrevData[tab+'|'+date]=existing; renderEntrySubjects(opt, existing);
+      }catch(e){ renderEntrySubjects(opt, {}); }
+    }
+
+    function renderEntrySubjects(opt, existing){
+      let container=document.getElementById('eSubjectContainer'); let submitBtn=document.getElementById('eSubmitBtn');
+      if(!opt||!opt.value){ container.innerHTML='<p style="text-align:center;">শ্রেণি বাছাই করুন</p>'; submitBtn.disabled=true; return; }
+      let subjects=[]; try{ subjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
+      if(!subjects.length){ container.innerHTML='<p style="text-align:center;color:red;">বিষয় নেই</p>'; submitBtn.disabled=true; return; }
+      let grid=document.createElement('div'); grid.className='subj-grid';
+      subjects.forEach(subj=>{
+        let prevHW=existing[subj]||''; let hasExisting=!!prevHW;
+        let item=document.createElement('div'); item.className='subj-item';
+        item.innerHTML=`<div class="subj-head"><span>${subj}</span>${hasExisting?'<span style="color:#10b981">✔ জমা</span>':''}</div><textarea class="subj-ta" data-subject="${subj}" placeholder="হোমওয়ার্ক লিখুন...">${prevHW}</textarea>`;
+        grid.appendChild(item);
+      });
+      container.innerHTML=''; container.appendChild(grid); submitBtn.disabled=false;
+    }
+
+    async function submitEntryForm(){
+      let date=document.getElementById('eDate').value.trim(); let tab=document.getElementById('eClass').value.trim();
+      let teacher=localStorage.getItem('hw_teacher')||'';
+      if(!date||!tab) return;
+      let textareas=document.querySelectorAll('#eSubjectContainer textarea[data-subject]');
+      let homeworks={}; let hasAny=false;
+      textareas.forEach(ta=>{ let val=ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
+      if(!hasAny) return;
+      let btn=document.getElementById('eSubmitBtn'); btn.disabled=true; btn.textContent='অপেক্ষা করুন...';
+      try{
+        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({tab:tab,date:date,homeworks:homeworks,teacher:teacher})});
+        let data=await res.json();
+        if(data.success){ showToast('সফলভাবে সেভ হয়েছে!'); setTimeout(checkEntryExisting, 800); }
+      }catch(err){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+      finally{ btn.disabled=false; btn.textContent='💾 হোমওয়ার্ক সেভ করুন'; }
+    }
+
+
+    // ----------------------------------------------------
+    // ৪. DASHBOARD APP LOGIC
+    // ----------------------------------------------------
+    let dashTeachers = []; let dashLastData = null;
+
+    function checkDashAuth(){
+      let role = localStorage.getItem('hw_role');
+      let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
+      if(role === 'Admin'){
+        document.getElementById('dLoginSection').style.display='none';
+        document.getElementById('dDashBody').style.display='block';
+        document.getElementById('loggedUserDash').textContent = adminName; // নাম দেখাচ্ছে
+        loadDashboard();
+      } else {
+        document.getElementById('dLoginSection').style.display='block';
+        document.getElementById('dDashBody').style.display='none';
+      }
+    }
+
+    async function doDashLogin(){
+      let user=document.getElementById('dUser').value.trim(); let pass=document.getElementById('dPass').value.trim();
+      if(!user||!pass) return;
+      let btn=document.getElementById('dLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+      try{
+        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'dashboard'})});
+        let data=await res.json();
+        if(data.success){ 
+          localStorage.setItem('hw_role', data.role); 
+          localStorage.setItem('hw_admin_name', data.teacher);
+          checkDashAuth(); 
+        } else { alert(data.error); }
+      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+    }
+
+    async function loadDashboard(){
+      let date = document.getElementById('dDate').value.trim();
+      if(!/^\d{2}-\d{2}-\d{4}$/.test(date)){ alert('তারিখ DD-MM-YYYY ফরম্যাটে লিখুন'); return; }
+      let btn=document.getElementById('dBtnLoad'); btn.disabled=true; btn.textContent='...';
+      try{
+        let r = await fetch(GAS_URL+'?action=dashboard&date='+encodeURIComponent(date));
+        let d = await r.json();
+        if(!d.success) throw new Error(d.error||'Error');
+        dashLastData = d; dashTeachers = d.teachers || [];
+        renderDashboard(d);
+      }catch(e){ alert('ডাটা আনা যায়নি'); }
+      btn.disabled=false; btn.textContent='দেখুন';
+    }
+
+    function renderDashboard(d){
+      let statuses = d.statuses || [];
+      let total = statuses.length, done = statuses.filter(s=>s.submitted&&s.filledSubjects===s.totalSubjects).length;
+      let partial = statuses.filter(s=>s.submitted&&s.filledSubjects<s.totalSubjects).length, miss = statuses.filter(s=>!s.submitted).length;
+
+      document.getElementById('dTotal').textContent = total; document.getElementById('dDone').textContent = done; document.getElementById('dMiss').textContent = miss+partial;
+      document.getElementById('btnWaAll').style.display = (miss>0 || partial>0) ? 'block' : 'none';
+
+      let grid = document.getElementById('dGrid'); grid.innerHTML='';
+      statuses.forEach(s=>{
+        let pct = s.totalSubjects>0 ? Math.round((s.filledSubjects/s.totalSubjects)*100) : (s.submitted?100:0);
+        let teacher = dashTeachers.find(t => t.cls && t.cls.split(',').map(x=>x.trim()).includes(s.tabName));
+        let waBtn='';
+        if(teacher){
+          if(pct===100){ waBtn='<span style="display:block;text-align:center;color:#10b981;font-weight:bold;font-size:12px;">✔ জমা আছে</span>'; }
+          else { let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${document.getElementById('dDate').value}) ${s.displayName} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। অনুগ্রহ করে দ্রুত হোমওয়ার্ক দিন।\nধন্যবাদ।`); waBtn=`<a class="btn-wa" href="https://wa.me/${teacher.phone.replace(/^880/,'0')}?text=${msg}" target="_blank">💬 রিমাইন্ডার</a>`; }
+        }
+        let card=document.createElement('div'); card.className='d-cls-card';
+        card.innerHTML=`<div class="d-cls-head"><span>${pct===100?'✅':(pct===0?'❌':'⚠️')}</span> ${s.displayName}</div><div class="d-cls-body"><div class="d-progress-wrap"><div class="d-progress-bar" style="width:${pct}%; background:${pct===100?'#10b981':(pct===0?'#ef4444':'#f59e0b')}"></div></div><div style="font-size:12px; margin-bottom:10px; color:#64748b;">${s.filledSubjects}/${s.totalSubjects} বিষয়</div>${waBtn}</div>`;
+        grid.appendChild(card);
+      });
+      
+      let tbody = document.getElementById('dTeacherBody'); let statusMap={}; statuses.forEach(s=>statusMap[s.tabName]=s);
+      let rowsHtml='';
+      dashTeachers.forEach(t=>{
+        let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
+        clsArr.forEach(c=>{
+          let s=statusMap[c], stText='দেয়নি ✘', stColor='#ef4444';
+          if(s && s.submitted && s.filledSubjects===s.totalSubjects){ stText='জমা ✔'; stColor='#10b981'; } 
+          else if(s && s.submitted){ stText='আংশিক ⚠'; stColor='#f59e0b'; }
+          let waHtml='—';
+          if(t.phone && stColor!=='#10b981'){ let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${d.date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি।`); waHtml=`<a class="wa-link" href="https://wa.me/${t.phone.replace(/^880/,'0')}?text=${msg}" target="_blank">📲 পাঠান</a>`; }
+          rowsHtml+=`<tr><td><b>${t.name}</b></td><td>${c}</td><td style="color:${stColor}; font-weight:bold;">${stText}</td><td>${waHtml}</td></tr>`;
+        });
+      });
+      tbody.innerHTML=rowsHtml; document.getElementById('dTeacherCard').style.display = rowsHtml ? 'block' : 'none';
+    }
+
+    function sendDashAllMissing(){
+      if(!dashLastData) return; let date = dashLastData.date, statusMap={};
+      dashLastData.statuses.forEach(s=>statusMap[s.tabName]=s);
+      let msgs = [];
+      dashTeachers.forEach(t=>{ 
+         let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
+         clsArr.forEach(c=>{
+             let s = statusMap[c];
+             if(!s || !s.submitted || s.filledSubjects<s.totalSubjects) {
+                 msgs.push({ phone: t.phone, text: encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। দ্রুত দিন।`) });
+             }
+         });
+      });
+      if(msgs.length===0){ alert('সবাই হোমওয়ার্ক দিয়েছেন 🎉'); return; }
+      let i=0; function openNext(){ if(i>=msgs.length) return; window.open('https://wa.me/'+msgs[i].phone.replace(/^880/,'0')+'?text='+msgs[i].text,'_blank'); i++; if(i<msgs.length) setTimeout(openNext,1200); }
+      openNext();
+    }
+
+
+    // ----------------------------------------------------
+    // ৫. PRINT APP LOGIC
+    // ----------------------------------------------------
+    let printCurrentData=null;
+
+    function checkPrintAuth(){
+      let role = localStorage.getItem('hw_role');
+      let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
+      if(role === 'Admin'){
+        document.getElementById('pLoginSection').style.display='none';
+        document.getElementById('pPrintBody').style.display='block';
+        document.getElementById('loggedUserPrint').textContent = adminName; // নাম দেখাচ্ছে
+        loadPrintConfig();
+      } else {
+        document.getElementById('pLoginSection').style.display='block';
+        document.getElementById('pPrintBody').style.display='none';
+      }
+    }
+
+    async function doPrintLogin(){
+      let user=document.getElementById('pUser').value.trim(); let pass=document.getElementById('pPass').value.trim();
+      if(!user||!pass) return;
+      let btn=document.getElementById('pLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+      try{
+        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'print'})});
+        let data=await res.json();
+        if(data.success){ 
+          localStorage.setItem('hw_role', data.role); 
+          localStorage.setItem('hw_admin_name', data.teacher);
+          checkPrintAuth(); 
+        } else { alert(data.error); }
+      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+    }
+
+    async function loadPrintConfig(){
+      try{
+        let r = await fetch(GAS_URL+'?action=config'); let d = await r.json();
+        let sel = document.getElementById('hClass'); sel.innerHTML = '<option value="">— শ্রেণি বাছাই করুন —</option>';
+        d.classes.forEach(c => { let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; sel.appendChild(o); });
+      }catch(e){}
+    }
+
+    async function doPrintFetch(){
+      let date = document.getElementById('hDate').value.trim();
+      let sel = document.getElementById('hClass'); let tab = sel.value.trim();
+      let clsTx= sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+      if(!date || !tab) return;
+      document.getElementById('pBtnFetch').textContent = 'অপেক্ষা করুন...';
+      try{
+        let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
+        let data=await r.json();
+        if(data.found && data.subjects.length > 0){
+          let filled=data.subjects.filter(s=>s.homework.trim());
+          document.getElementById('hPrevBody').innerHTML=filled.map(s=>`<tr><td style="font-weight:bold; color:#1e40af;">${s.subject}</td><td>${s.homework}</td></tr>`).join('');
+          document.getElementById('hPrev').style.display = 'table'; document.getElementById('hPrintBar').style.display = 'block';
+          printCurrentData={ date:date, classLabel:clsTx, subjects:filled };
+        } else { alert('কোনো ডাটা পাওয়া যায়নি!'); }
+      }catch(err){ alert('সার্ভার এরর!'); }
+      document.getElementById('pBtnFetch').textContent = 'হোমওয়ার্ক দেখুন';
+    }
+
+    function doPrintOut(){
+      if(!printCurrentData) return;
+      let date=printCurrentData.date; let classLabel=printCurrentData.classLabel; let subjects=printCurrentData.subjects;
+      let rows=subjects.map(s=>`<tr><td class="cs">${s.subject}</td><td class="ch">${s.homework}</td></tr>`).join('');
+      function card(){
+        return `<div class="c"><div class="ct"><span class="csc">${SCHOOL_NAME}</span><span class="ccl">${classLabel}</span><span class="cdt">${date.replace(/-/g,'/')}</span></div><table class="ctbl"><thead><tr><th class="ths">বিষয়</th><th>হোমওয়ার্ক</th></tr></thead><tbody>${rows}</tbody></table><table class="csign"><tr><td class="sl" style="width:20%">অভিভাবকের<br>স্বাক্ষর</td><td class="sb" style="width:30%"></td><td class="sl" style="width:20%">শ্রেণি শিক্ষকের<br>স্বাক্ষর</td><td class="sb" style="width:30%"></td></tr></table></div>`;
+      }
+      let cards=[0,1,2,3,4,5].map(card).join('');
+      let w=window.open('','_blank','width=960,height=720');
+      w.document.write(`<!DOCTYPE html><html><head><title>${classLabel} | ${date}</title><style>@page{size:A4 portrait;margin:0}*{margin:0;padding:0;box-sizing:border-box}body{font-family:sans-serif;width:210mm;height:297mm;background:white;overflow:hidden}#g{width:210mm;height:297mm;padding:3mm;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:2.5mm}.c{border:2px solid #0f172a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column}.ct{background:#0f172a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:white;padding:3px 6px;display:flex;align-items:center;gap:4px;min-height:18px;flex-shrink:0;font-size:9px;font-weight:700;}.csc{flex:1;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ccl{background:rgba(255,255,255,.2);border-radius:3px;padding:2px 5px;white-space:nowrap;font-size:8px;}.cdt{white-space:nowrap;font-size:8px;margin-left:3px}.ctbl{flex:1;width:100%;height:100%;border-collapse:collapse;font-size:9px;table-layout:fixed;}.ctbl thead tr{background:#f1f5f9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.ctbl th{padding:2px 4px;border:1px solid #cbd5e1;font-size:8.5px;font-weight:700;text-align:center;line-height:1.2;color:#0f172a}.ths{width:22mm}.ctbl td{padding:1px 4px;border:1px solid #cbd5e1;vertical-align:middle;line-height:1.25;word-break:break-word;height:auto;}.cs{font-weight:700;color:#1e3a8a;width:22mm;white-space:nowrap}.ch{color:#0f172a}.ctbl tbody tr:nth-child(even) td{background:#f8fafc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.csign{width:100%;border-collapse:collapse;border-top:2px solid #0f172a;flex-shrink:0}.csign td{border:1px solid #94a3b8;padding:0px 2px;font-size:7.5px;text-align:center;height:16px;vertical-align:middle;line-height:1.2;}.sl{background:#e2e8f0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-weight:700;color:#0f172a}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="g">${cards}</div><script>setTimeout(function(){window.print();},500);<\/script></body></html>`);
+      w.document.close();
+    }
+  </script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registered!', reg))
+          .catch(err => console.log('SW failed', err));
+      });
+    }
+  </script>
 </body>
 </html>
