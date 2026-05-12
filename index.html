@@ -7,7 +7,6 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1a0533">
   
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -37,9 +36,7 @@
     .mc-text h3 { margin: 0 0 4px; font-family: 'Noto Serif Bengali', serif; font-size: 18px; color: #0f0a2e; }
     .mc-text p { margin: 0; font-size: 13px; color: #64748b; }
 
-    /* =========================================
-       USER BAR (Welcome & Logout)
-       ========================================= */
+    /* USER BAR (Welcome & Logout) */
     .user-bar { display: flex; justify-content: space-between; align-items: center; background: white; padding: 13px 18px; border-radius: 16px; margin-bottom: 18px; box-shadow: 0 2px 12px rgba(79,53,212,0.08); border: 1px solid rgba(79,53,212,0.08); }
     .user-info { display: flex; align-items: center; gap: 11px; }
     .user-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; box-shadow: 0 4px 12px rgba(79,53,212,0.25); flex-shrink: 0; color: white; }
@@ -48,9 +45,7 @@
     .btn-logout { background: #fef2f2; color: #ef4444; border: 1px solid #fecaca; padding: 8px 16px; border-radius: 11px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: 'Hind Siliguri', sans-serif; transition: 0.3s; }
     .btn-logout:hover { background: #fee2e2; }
 
-    /* =========================================
-       THAKURGAON SHOP FOOTER AD CSS
-       ========================================= */
+    /* FOOTER AD */
     .global-footer-wrap { padding: 0 16px 20px; margin-top: 20px; }
     .global-footer { background: linear-gradient(135deg, #181d36, #211c47); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.3); position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
     .global-footer::before { content: ''; position: absolute; right: -30px; top: -30px; width: 100px; height: 100px; border-radius: 50%; background: radial-gradient(circle, rgba(245,158,11,0.15), transparent); pointer-events: none; }
@@ -112,8 +107,12 @@
     /* Print Specific */
     .prev-tbl { width: 100%; border-collapse: collapse; margin-top:15px; background:white;}
     .prev-tbl th, .prev-tbl td { padding: 12px; border: 1px solid #e2e8f0; text-align: left; font-family: 'Noto Serif Bengali', serif;}
-    .btn-print-big { width: 100%; padding: 18px; background: #059669; color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top:20px; }
-    .btn-blue { width: 100%; padding: 15px; background: #2563eb; color: white; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+    .btn-print-big { width: 100%; padding: 18px; background: #059669; color: white; border: none; border-radius: 16px; font-weight: 700; font-size: 16px; cursor: pointer; transition: 0.3s; }
+    .btn-print-big:hover { transform: translateY(-2px); opacity: 0.9; }
+    
+    /* NEW BEAUTIFUL FETCH BUTTON */
+    .btn-blue { width: 100%; padding: 16px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; border-radius: 14px; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 15px; box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3); transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-blue:hover { transform: translateY(-3px); box-shadow: 0 12px 25px rgba(37, 99, 235, 0.4); }
 
     /* Toast */
     .f-toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px); min-width: 280px; padding: 14px 22px; border-radius: 14px; font-size: 14px; font-weight: 600; text-align: center; opacity: 0; pointer-events: none; transition: all 0.4s ease; z-index: 99999; box-shadow: 0 12px 40px rgba(0,0,0,0.2); font-family: 'Noto Serif Bengali', serif; color: white; background: #10b981;}
@@ -122,9 +121,6 @@
 </head>
 <body>
 
-  <!-- =========================================
-       1. HOME SCREEN
-       ========================================= -->
   <div id="homeScreen">
     <div class="hero-section">
       <div class="hero-icon">🏫</div>
@@ -158,23 +154,17 @@
       </div>
     </div>
 
-    <!-- Global Footer (Home) -->
     <div id="footerPlaceholderHome"></div>
   </div>
 
 
-  <!-- =========================================
-       2. APP CONTAINER (Inner Pages)
-       ========================================= -->
   <div id="appContainer" style="display: none;">
     
-    <!-- Top Navigation -->
     <div class="top-nav">
       <button class="btn-home" onclick="goHome()">🏠 হোম</button>
       <div class="nav-title" id="appTitle">লোডিং...</div>
     </div>
 
-    <!-- 🟢 A. ENTRY VIEW -->
     <div id="view-entry" class="app-view">
       
       <div id="eLoginSection" class="login-section">
@@ -187,7 +177,6 @@
 
       <div id="eMainSection" style="display:none;">
         
-        <!-- User Bar with logged in Name -->
         <div class="user-bar">
           <div class="user-info">
             <div class="user-avatar" style="background: linear-gradient(135deg, #4f35d4, #7c3aed);">👨‍🏫</div>
@@ -219,7 +208,6 @@
     </div>
 
 
-    <!-- 🟢 B. DASHBOARD VIEW -->
     <div id="view-dash" class="app-view">
       
       <div id="dLoginSection" class="login-section">
@@ -232,7 +220,6 @@
 
       <div id="dDashBody" style="display:none;">
         
-        <!-- User Bar with logged in Name -->
         <div class="user-bar">
           <div class="user-info">
             <div class="user-avatar" style="background: linear-gradient(135deg, #059669, #10b981);">🛡️</div>
@@ -273,7 +260,6 @@
     </div>
 
 
-    <!-- 🟢 C. PRINT VIEW -->
     <div id="view-print" class="app-view">
       
       <div id="pLoginSection" class="login-section">
@@ -286,10 +272,9 @@
 
       <div id="pPrintBody" style="display:none;">
 
-        <!-- User Bar with logged in Name -->
         <div class="user-bar">
           <div class="user-info">
-            <div class="user-avatar" style="background: linear-gradient(135deg, #2563eb, #06b6d4);">🖨️</div>
+            <div class="user-avatar" style="background: linear-gradient(135deg, #2563eb, #06b6d4); color:white;">🖨️</div>
             <div>
               <div class="user-text-sm">অ্যাডমিন,</div>
               <div class="user-text-lg" id="loggedUserPrint"></div>
@@ -305,27 +290,30 @@
               <div class="f-field"><label>তারিখ (DD-MM-YYYY)</label><input type="text" id="hDate"></div>
               <div class="f-field"><label>শ্রেণি</label><select id="hClass"></select></div>
             </div>
-            <button class="btn-blue" id="pBtnFetch" onclick="doPrintFetch()">হোমওয়ার্ক দেখুন</button>
+            
+            <button class="btn-blue" id="pBtnFetch" onclick="doPrintFetch()">
+              <span style="font-size: 18px;">👁️</span> হোমওয়ার্ক দেখুন
+            </button>
             
             <table class="prev-tbl" id="hPrev" style="display:none;">
               <thead><tr><th>বিষয়</th><th>হোমওয়ার্ক</th></tr></thead>
               <tbody id="hPrevBody"></tbody>
             </table>
             
-            <button class="btn-print-big" id="hPrintBar" style="display:none;" onclick="doPrintOut()">🖨️ ডায়েরি A4-এ ৬ কপি প্রিন্ট করুন</button>
+            <div id="hPrintBar" style="display:none; gap:12px; margin-top:20px; flex-wrap:wrap;">
+              <button class="btn-print-big" onclick="doPrintOut(6)" style="margin-top:0; background:linear-gradient(135deg,#059669,#10b981); flex:1; min-width:200px; padding:15px; font-size:16px;">🖨️ ৬ কপি প্রিন্ট</button>
+              <button class="btn-print-big" onclick="doPrintOut(8)" style="margin-top:0; background:linear-gradient(135deg,#2563eb,#1d4ed8); flex:1; min-width:200px; padding:15px; font-size:16px;">🖨️ ৮ কপি প্রিন্ট</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Global Footer (Inner Pages) -->
     <div id="footerPlaceholderApp"></div>
   </div>
 
-  <!-- Toast Notification -->
   <div class="f-toast" id="globalToast">সফলভাবে সম্পন্ন হয়েছে!</div>
 
-  <!-- FOOTER TEMPLATE (Injected dynamically) -->
   <template id="thFooterTemplate">
     <div class="global-footer-wrap">
       <div class="global-footer" onclick="window.open('https://thakurgaonshop.com','_blank')">
@@ -347,385 +335,430 @@
     </div>
   </template>
 
+</div>
 
-  <!-- =========================================
-       JAVASCRIPT APP LOGIC
-       ========================================= -->
-  <script>
-    // ----------------------------------------------------
-    // ১. গ্লোবাল ভেরিয়েবল ও ফাংশন
-    // ----------------------------------------------------
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbymC4sKh_z08pmwgNNLFY1Wqm3Dch_wUxCzQ0Wa9k-pAMlxp0ql6CNrT-E8xiudXaaA/exec';
-    const SCHOOL_NAME = '\u09AE\u09BE\u09B0\u0995\u09BE\u09AF\u09BC\u09C1\u09A8 \u09A8\u09C2\u09B0 \u0986\u09B2 \u0987\u09B8\u09B2\u09BE\u09AE\u09BF';
-    let currentActiveApp = '';
+<script>
+// ----------------------------------------------------
+// ১. গ্লোবাল ভেরিয়েবল ও ফাংশন
+// ----------------------------------------------------
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbymC4sKh_z08pmwgNNLFY1Wqm3Dch_wUxCzQ0Wa9k-pAMlxp0ql6CNrT-E8xiudXaaA/exec';
 
-    function todayStr(){ 
-      let d = new Date(); 
-      return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear(); 
-    }
+let currentActiveApp = '';
 
-    function showToast(msg) {
-      let t = document.getElementById('globalToast');
-      t.textContent = msg; t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 3000);
-    }
+function todayStr(){ 
+  let d = new Date(); 
+  return String(d.getDate()).padStart(2,'0')+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+d.getFullYear(); 
+}
 
-    // হোয়াটসঅ্যাপ নাম্বার ফরমেট ঠিক করার ফাংশন (কান্ট্রি কোড যুক্ত করা)
-    function getWaNum(p) {
-      if(!p) return '';
-      let num = p.toString().replace(/\D/g, ''); // স্পেস বা + চিহ্ন সরিয়ে ফেলা
-      if(num.startsWith('0')) return '88' + num;
-      if(!num.startsWith('880')) return '880' + num;
-      return num;
-    }
+function showToast(msg) {
+  let t = document.getElementById('globalToast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-    // টেবিলের জন্য ফোন নাম্বার 018... ফরম্যাটে দেখানো
-    function getDisplayNum(p) {
-      if(!p) return '—';
-      let num = p.toString().replace(/\D/g, '');
-      if(num.startsWith('880')) return '0' + num.substring(3);
-      return num;
-    }
+// হোয়াটসঅ্যাপ নাম্বার ফরমেট
+function getWaNum(p) {
+  if(!p) return '';
+  let num = p.toString().replace(/\D/g, ''); 
+  if(num.startsWith('0')) return '88' + num;
+  if(!num.startsWith('880')) return '880' + num;
+  return num;
+}
 
-    // ইনজেক্ট ফুটার
-    document.getElementById('footerPlaceholderHome').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
-    document.getElementById('footerPlaceholderApp').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
+// ডিসপ্লে নাম্বার ফিক্স
+function getDisplayNum(p) {
+  if(!p) return '—';
+  let num = p.toString().replace(/\D/g, '');
+  if(num.startsWith('880')) return '0' + num.substring(3);
+  return num;
+}
 
-    // ----------------------------------------------------
-    // ২. নেভিগেশন (PWA Routing)
-    // ----------------------------------------------------
-    function openApp(app) {
-      currentActiveApp = app;
-      document.getElementById('homeScreen').style.display = 'none';
-      document.getElementById('appContainer').style.display = 'block';
-      
-      document.getElementById('view-entry').style.display = app==='entry' ? 'block' : 'none';
-      document.getElementById('view-dash').style.display  = app==='dash'  ? 'block' : 'none';
-      document.getElementById('view-print').style.display = app==='print' ? 'block' : 'none';
+// ইনজেক্ট ফুটার
+document.getElementById('footerPlaceholderHome').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
+document.getElementById('footerPlaceholderApp').appendChild(document.getElementById('thFooterTemplate').content.cloneNode(true));
 
-      if(app==='entry') { 
-        document.getElementById('appTitle').innerText='হোমওয়ার্ক এন্ট্রি'; 
-        document.getElementById('eDate').value = todayStr(); 
-        checkEntryAuth(); 
-      }
-      else if(app==='dash') { 
-        document.getElementById('appTitle').innerText='ড্যাশবোর্ড'; 
-        document.getElementById('dDate').value = todayStr(); 
-        checkDashAuth(); 
-      }
-      else if(app==='print') { 
-        document.getElementById('appTitle').innerText='হোমওয়ার্ক প্রিন্ট'; 
-        document.getElementById('hDate').value = todayStr(); 
-        checkPrintAuth(); 
-      }
-      history.pushState({app: app}, '', '#'+app);
-    }
+// ----------------------------------------------------
+// ২. নেভিগেশন (PWA Routing)
+// ----------------------------------------------------
+function openApp(app) {
+  currentActiveApp = app;
+  document.getElementById('homeScreen').style.display = 'none';
+  document.getElementById('appContainer').style.display = 'block';
+  
+  document.getElementById('view-entry').style.display = app==='entry' ? 'block' : 'none';
+  document.getElementById('view-dash').style.display  = app==='dash'  ? 'block' : 'none';
+  document.getElementById('view-print').style.display = app==='print' ? 'block' : 'none';
 
-    function goHome() {
-      currentActiveApp = '';
-      document.getElementById('appContainer').style.display = 'none';
-      document.getElementById('homeScreen').style.display = 'flex';
-      history.pushState({app: 'home'}, '', window.location.pathname);
-    }
+  if(app==='entry') { 
+    document.getElementById('appTitle').innerText='হোমওয়ার্ক এন্ট্রি'; 
+    document.getElementById('eDate').value = todayStr(); 
+    checkEntryAuth(); 
+  }
+  else if(app==='dash') { 
+    document.getElementById('appTitle').innerText='ড্যাশবোর্ড'; 
+    document.getElementById('dDate').value = todayStr(); 
+    checkDashAuth(); 
+  }
+  else if(app==='print') { 
+    document.getElementById('appTitle').innerText='হোমওয়ার্ক প্রিন্ট'; 
+    document.getElementById('hDate').value = todayStr(); 
+    checkPrintAuth(); 
+  }
+  history.pushState({app: app}, '', '#'+app);
+}
 
-    window.addEventListener('popstate', function(e) {
-      if(e.state && e.state.app && e.state.app !== 'home') { openApp(e.state.app); } 
-      else { goHome(); }
+function goHome() {
+  currentActiveApp = '';
+  document.getElementById('appContainer').style.display = 'none';
+  document.getElementById('homeScreen').style.display = 'flex';
+  history.pushState({app: 'home'}, '', window.location.pathname);
+}
+
+window.addEventListener('popstate', function(e) {
+  if(e.state && e.state.app && e.state.app !== 'home') { openApp(e.state.app); } 
+  else { goHome(); }
+});
+
+function performLogout(){
+  if(currentActiveApp === 'entry') { localStorage.removeItem('hw_teacher'); checkEntryAuth(); }
+  else if(currentActiveApp === 'dash') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkDashAuth(); }
+  else if(currentActiveApp === 'print') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkPrintAuth(); }
+}
+
+// ----------------------------------------------------
+// ৩. ENTRY APP LOGIC
+// ----------------------------------------------------
+let entryPrevData = {};
+let entryCheckTimer = null;
+
+function checkEntryAuth(){
+  let teacher = localStorage.getItem('hw_teacher');
+  if(teacher){
+    document.getElementById('eLoginSection').style.display='none';
+    document.getElementById('eMainSection').style.display='block';
+    document.getElementById('loggedUserEntry').textContent = teacher; 
+    loadEntryConfig();
+  } else {
+    document.getElementById('eLoginSection').style.display='block';
+    document.getElementById('eMainSection').style.display='none';
+  }
+}
+
+async function doEntryLogin(){
+  let user=document.getElementById('eUser').value.trim();
+  let pass=document.getElementById('ePass').value.trim();
+  if(!user||!pass) return;
+  let btn=document.getElementById('eLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+  try{
+    let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'entry'})});
+    let data=await res.json();
+    if(data.success){ localStorage.setItem('hw_teacher',data.teacher); checkEntryAuth(); }
+    else { alert(data.error); }
+  }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+  btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+}
+
+async function loadEntryConfig(){
+  try{
+    let r=await fetch(GAS_URL+'?action=config'); let d=await r.json();
+    let sel=document.getElementById('eClass'); sel.innerHTML='<option value="">— শ্রেণি বাছাই করুন —</option>';
+    d.classes.forEach(c => {
+      let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; 
+      o.dataset.subjects=JSON.stringify(c.subjects); sel.appendChild(o);
     });
+  }catch(e){}
+}
 
-    function performLogout(){
-      if(currentActiveApp === 'entry') { localStorage.removeItem('hw_teacher'); checkEntryAuth(); }
-      else if(currentActiveApp === 'dash') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkDashAuth(); }
-      else if(currentActiveApp === 'print') { localStorage.removeItem('hw_role'); localStorage.removeItem('hw_admin_name'); checkPrintAuth(); }
-    }
+function onEntryClassChange(){ clearTimeout(entryCheckTimer); entryCheckTimer=setTimeout(checkEntryExisting, 400); }
 
-    // ----------------------------------------------------
-    // ৩. ENTRY APP LOGIC
-    // ----------------------------------------------------
-    let entryPrevData = {};
-    let entryCheckTimer = null;
+async function checkEntryExisting(){
+  let date=document.getElementById('eDate').value.trim();
+  let sel=document.getElementById('eClass'); let tab=sel.value.trim();
+  let opt=sel.options[sel.selectedIndex];
+  renderEntrySubjects(opt, {});
+  if(!tab||!date) return;
+  document.getElementById('eSubjectContainer').innerHTML='<p style="text-align:center;">ডাটা আনা হচ্ছে...</p>';
+  try{
+    let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
+    let d=await r.json(); let existing={};
+    if(d.success&&d.found){ (d.subjects||[]).forEach(s=>{ if(s.homework.trim()) existing[s.subject]=s.homework.trim(); }); }
+    entryPrevData[tab+'|'+date]=existing; renderEntrySubjects(opt, existing);
+  }catch(e){ renderEntrySubjects(opt, {}); }
+}
 
-    function checkEntryAuth(){
-      let teacher = localStorage.getItem('hw_teacher');
-      if(teacher){
-        document.getElementById('eLoginSection').style.display='none';
-        document.getElementById('eMainSection').style.display='block';
-        document.getElementById('loggedUserEntry').textContent = teacher; // নাম দেখাচ্ছে
-        loadEntryConfig();
-      } else {
-        document.getElementById('eLoginSection').style.display='block';
-        document.getElementById('eMainSection').style.display='none';
+function renderEntrySubjects(opt, existing){
+  let container=document.getElementById('eSubjectContainer'); let submitBtn=document.getElementById('eSubmitBtn');
+  if(!opt||!opt.value){ container.innerHTML='<p style="text-align:center;">শ্রেণি বাছাই করুন</p>'; submitBtn.disabled=true; return; }
+  let subjects=[]; try{ subjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
+  if(!subjects.length){ container.innerHTML='<p style="text-align:center;color:red;">বিষয় নেই</p>'; submitBtn.disabled=true; return; }
+  let grid=document.createElement('div'); grid.className='subj-grid';
+  subjects.forEach(subj=>{
+    let prevHW=existing[subj]||''; let hasExisting=!!prevHW;
+    let item=document.createElement('div'); item.className='subj-item';
+    item.innerHTML=`<div class="subj-head"><span>${subj}</span>${hasExisting?'<span style="color:#10b981">✔ জমা</span>':''}</div><textarea class="subj-ta" data-subject="${subj}" placeholder="হোমওয়ার্ক লিখুন...">${prevHW}</textarea>`;
+    grid.appendChild(item);
+  });
+  container.innerHTML=''; container.appendChild(grid); submitBtn.disabled=false;
+}
+
+async function submitEntryForm(){
+  let date=document.getElementById('eDate').value.trim(); let tab=document.getElementById('eClass').value.trim();
+  let teacher=localStorage.getItem('hw_teacher')||'';
+  if(!date||!tab) return;
+  let textareas=document.querySelectorAll('#eSubjectContainer textarea[data-subject]');
+  let homeworks={}; let hasAny=false;
+  textareas.forEach(ta=>{ let val=ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
+  if(!hasAny) return;
+  let btn=document.getElementById('eSubmitBtn'); btn.disabled=true; btn.textContent='অপেক্ষা করুন...';
+  try{
+    let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({tab:tab,date:date,homeworks:homeworks,teacher:teacher})});
+    let data=await res.json();
+    if(data.success){ showToast('সফলভাবে সেভ হয়েছে!'); setTimeout(checkEntryExisting, 800); }
+  }catch(err){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+  finally{ btn.disabled=false; btn.textContent='💾 হোমওয়ার্ক সেভ করুন'; }
+}
+
+
+// ----------------------------------------------------
+// ৪. DASHBOARD APP LOGIC
+// ----------------------------------------------------
+let dashTeachers = []; let dashLastData = null;
+
+function checkDashAuth(){
+  let role = localStorage.getItem('hw_role');
+  let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
+  if(role === 'Admin'){
+    document.getElementById('dLoginSection').style.display='none';
+    document.getElementById('dDashBody').style.display='block';
+    document.getElementById('loggedUserDash').textContent = adminName;
+    loadDashboard();
+  } else {
+    document.getElementById('dLoginSection').style.display='block';
+    document.getElementById('dDashBody').style.display='none';
+  }
+}
+
+async function doDashLogin(){
+  let user=document.getElementById('dUser').value.trim(); let pass=document.getElementById('dPass').value.trim();
+  if(!user||!pass) return;
+  let btn=document.getElementById('dLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+  try{
+    let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'dashboard'})});
+    let data=await res.json();
+    if(data.success){ 
+      localStorage.setItem('hw_role', data.role); 
+      localStorage.setItem('hw_admin_name', data.teacher);
+      checkDashAuth(); 
+    } else { alert(data.error); }
+  }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+  btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+}
+
+async function loadDashboard(){
+  let date = document.getElementById('dDate').value.trim();
+  if(!/^\d{2}-\d{2}-\d{4}$/.test(date)){ alert('তারিখ DD-MM-YYYY ফরম্যাটে লিখুন'); return; }
+  let btn=document.getElementById('dBtnLoad'); btn.disabled=true; btn.textContent='...';
+  try{
+    let r = await fetch(GAS_URL+'?action=dashboard&date='+encodeURIComponent(date));
+    let d = await r.json();
+    if(!d.success) throw new Error(d.error||'Error');
+    dashLastData = d; dashTeachers = d.teachers || [];
+    renderDashboard(d);
+  }catch(e){ alert('ডাটা আনা যায়নি'); }
+  btn.disabled=false; btn.textContent='দেখুন';
+}
+
+function renderDashboard(d){
+  let statuses = d.statuses || [];
+  let total = statuses.length, done = statuses.filter(s=>s.submitted&&s.filledSubjects===s.totalSubjects).length;
+  let partial = statuses.filter(s=>s.submitted&&s.filledSubjects<s.totalSubjects).length, miss = statuses.filter(s=>!s.submitted).length;
+
+  document.getElementById('dTotal').textContent = total; document.getElementById('dDone').textContent = done; document.getElementById('dMiss').textContent = miss+partial;
+  document.getElementById('btnWaAll').style.display = (miss>0 || partial>0) ? 'block' : 'none';
+
+  let grid = document.getElementById('dGrid'); grid.innerHTML='';
+  statuses.forEach(s=>{
+    let pct = s.totalSubjects>0 ? Math.round((s.filledSubjects/s.totalSubjects)*100) : (s.submitted?100:0);
+    let teacher = dashTeachers.find(t => t.cls && t.cls.split(',').map(x=>x.trim()).includes(s.tabName));
+    let waBtn='';
+    if(teacher){
+      if(pct===100){ 
+        waBtn='<span style="display:block;text-align:center;color:#10b981;font-weight:bold;font-size:12px;">✔ জমা আছে</span>'; 
+      }
+      else { 
+        let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${document.getElementById('dDate').value}) ${s.displayName} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। অনুগ্রহ করে দ্রুত হোমওয়ার্ক দিন।\nধন্যবাদ।`); 
+        let finalWaNum = getWaNum(teacher.phone);
+        waBtn=`<a class="btn-wa" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">💬 রিমাইন্ডার</a>`; 
       }
     }
-
-    async function doEntryLogin(){
-      let user=document.getElementById('eUser').value.trim();
-      let pass=document.getElementById('ePass').value.trim();
-      if(!user||!pass) return;
-      let btn=document.getElementById('eLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
-      try{
-        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'entry'})});
-        let data=await res.json();
-        if(data.success){ localStorage.setItem('hw_teacher',data.teacher); checkEntryAuth(); }
-        else { alert(data.error); }
-      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
-      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
-    }
-
-    async function loadEntryConfig(){
-      try{
-        let r=await fetch(GAS_URL+'?action=config'); let d=await r.json();
-        let sel=document.getElementById('eClass'); sel.innerHTML='<option value="">— শ্রেণি বাছাই করুন —</option>';
-        d.classes.forEach(c => {
-          let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; 
-          o.dataset.subjects=JSON.stringify(c.subjects); sel.appendChild(o);
-        });
-      }catch(e){}
-    }
-
-    function onEntryClassChange(){ clearTimeout(entryCheckTimer); entryCheckTimer=setTimeout(checkEntryExisting, 400); }
-
-    async function checkEntryExisting(){
-      let date=document.getElementById('eDate').value.trim();
-      let sel=document.getElementById('eClass'); let tab=sel.value.trim();
-      let opt=sel.options[sel.selectedIndex];
-      renderEntrySubjects(opt, {});
-      if(!tab||!date) return;
-      document.getElementById('eSubjectContainer').innerHTML='<p style="text-align:center;">ডাটা আনা হচ্ছে...</p>';
-      try{
-        let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
-        let d=await r.json(); let existing={};
-        if(d.success&&d.found){ (d.subjects||[]).forEach(s=>{ if(s.homework.trim()) existing[s.subject]=s.homework.trim(); }); }
-        entryPrevData[tab+'|'+date]=existing; renderEntrySubjects(opt, existing);
-      }catch(e){ renderEntrySubjects(opt, {}); }
-    }
-
-    function renderEntrySubjects(opt, existing){
-      let container=document.getElementById('eSubjectContainer'); let submitBtn=document.getElementById('eSubmitBtn');
-      if(!opt||!opt.value){ container.innerHTML='<p style="text-align:center;">শ্রেণি বাছাই করুন</p>'; submitBtn.disabled=true; return; }
-      let subjects=[]; try{ subjects=JSON.parse(opt.dataset.subjects||'[]'); }catch(e){}
-      if(!subjects.length){ container.innerHTML='<p style="text-align:center;color:red;">বিষয় নেই</p>'; submitBtn.disabled=true; return; }
-      let grid=document.createElement('div'); grid.className='subj-grid';
-      subjects.forEach(subj=>{
-        let prevHW=existing[subj]||''; let hasExisting=!!prevHW;
-        let item=document.createElement('div'); item.className='subj-item';
-        item.innerHTML=`<div class="subj-head"><span>${subj}</span>${hasExisting?'<span style="color:#10b981">✔ জমা</span>':''}</div><textarea class="subj-ta" data-subject="${subj}" placeholder="হোমওয়ার্ক লিখুন...">${prevHW}</textarea>`;
-        grid.appendChild(item);
-      });
-      container.innerHTML=''; container.appendChild(grid); submitBtn.disabled=false;
-    }
-
-    async function submitEntryForm(){
-      let date=document.getElementById('eDate').value.trim(); let tab=document.getElementById('eClass').value.trim();
-      let teacher=localStorage.getItem('hw_teacher')||'';
-      if(!date||!tab) return;
-      let textareas=document.querySelectorAll('#eSubjectContainer textarea[data-subject]');
-      let homeworks={}; let hasAny=false;
-      textareas.forEach(ta=>{ let val=ta.value.trim(); if(val){ homeworks[ta.dataset.subject]=val; hasAny=true; } });
-      if(!hasAny) return;
-      let btn=document.getElementById('eSubmitBtn'); btn.disabled=true; btn.textContent='অপেক্ষা করুন...';
-      try{
-        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({tab:tab,date:date,homeworks:homeworks,teacher:teacher})});
-        let data=await res.json();
-        if(data.success){ showToast('সফলভাবে সেভ হয়েছে!'); setTimeout(checkEntryExisting, 800); }
-      }catch(err){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
-      finally{ btn.disabled=false; btn.textContent='💾 হোমওয়ার্ক সেভ করুন'; }
-    }
-
-
-    // ----------------------------------------------------
-    // ৪. DASHBOARD APP LOGIC
-    // ----------------------------------------------------
-    let dashTeachers = []; let dashLastData = null;
-
-    function checkDashAuth(){
-      let role = localStorage.getItem('hw_role');
-      let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
-      if(role === 'Admin'){
-        document.getElementById('dLoginSection').style.display='none';
-        document.getElementById('dDashBody').style.display='block';
-        document.getElementById('loggedUserDash').textContent = adminName; // নাম দেখাচ্ছে
-        loadDashboard();
-      } else {
-        document.getElementById('dLoginSection').style.display='block';
-        document.getElementById('dDashBody').style.display='none';
+    let card=document.createElement('div'); card.className='d-cls-card';
+    card.innerHTML=`<div class="d-cls-head"><span>${pct===100?'✅':(pct===0?'❌':'⚠️')}</span> ${s.displayName}</div><div class="d-cls-body"><div class="d-progress-wrap"><div class="d-progress-bar" style="width:${pct}%; background:${pct===100?'#10b981':(pct===0?'#ef4444':'#f59e0b')}"></div></div><div style="font-size:12px; margin-bottom:10px; color:#64748b;">${s.filledSubjects}/${s.totalSubjects} বিষয়</div>${waBtn}</div>`;
+    grid.appendChild(card);
+  });
+  
+  let tbody = document.getElementById('dTeacherBody'); let statusMap={}; statuses.forEach(s=>statusMap[s.tabName]=s);
+  let rowsHtml='';
+  dashTeachers.forEach(t=>{
+    let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
+    clsArr.forEach(c=>{
+      let s=statusMap[c], stText='দেয়নি ✘', stColor='#ef4444';
+      if(s && s.submitted && s.filledSubjects===s.totalSubjects){ stText='জমা ✔'; stColor='#10b981'; } 
+      else if(s && s.submitted){ stText='আংশিক ⚠'; stColor='#f59e0b'; }
+      let waHtml='—';
+      if(t.phone && stColor!=='#10b981'){ 
+        let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${d.date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি।`); 
+        let finalWaNum = getWaNum(t.phone);
+        waHtml=`<a class="wa-link" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">📲 পাঠান</a>`; 
       }
-    }
+      rowsHtml+=`<tr><td><b>${t.name}</b></td><td>${c}</td><td>${getDisplayNum(t.phone)}</td><td style="color:${stColor}; font-weight:bold;">${stText}</td><td>${waHtml}</td></tr>`;
+    });
+  });
+  tbody.innerHTML=rowsHtml; document.getElementById('dTeacherCard').style.display = rowsHtml ? 'block' : 'none';
+}
 
-    async function doDashLogin(){
-      let user=document.getElementById('dUser').value.trim(); let pass=document.getElementById('dPass').value.trim();
-      if(!user||!pass) return;
-      let btn=document.getElementById('dLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
-      try{
-        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'dashboard'})});
-        let data=await res.json();
-        if(data.success){ 
-          localStorage.setItem('hw_role', data.role); 
-          localStorage.setItem('hw_admin_name', data.teacher);
-          checkDashAuth(); 
-        } else { alert(data.error); }
-      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
-      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
-    }
+function sendDashAllMissing(){
+  if(!dashLastData) return; let date = dashLastData.date, statusMap={};
+  dashLastData.statuses.forEach(s=>statusMap[s.tabName]=s);
+  let msgs = [];
+  dashTeachers.forEach(t=>{ 
+     let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
+     clsArr.forEach(c=>{
+         let s = statusMap[c];
+         if(!s || !s.submitted || s.filledSubjects<s.totalSubjects) {
+             let finalWaNum = getWaNum(t.phone);
+             msgs.push({ phone: finalWaNum, text: encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। দ্রুত দিন।`) });
+         }
+     });
+  });
+  if(msgs.length===0){ alert('সবাই হোমওয়ার্ক দিয়েছেন 🎉'); return; }
+  let i=0; function openNext(){ if(i>=msgs.length) return; window.open('https://wa.me/'+msgs[i].phone+'?text='+msgs[i].text,'_blank'); i++; if(i<msgs.length) setTimeout(openNext,1200); }
+  openNext();
+}
 
-    async function loadDashboard(){
-      let date = document.getElementById('dDate').value.trim();
-      if(!/^\d{2}-\d{2}-\d{4}$/.test(date)){ alert('তারিখ DD-MM-YYYY ফরম্যাটে লিখুন'); return; }
-      let btn=document.getElementById('dBtnLoad'); btn.disabled=true; btn.textContent='...';
-      try{
-        let r = await fetch(GAS_URL+'?action=dashboard&date='+encodeURIComponent(date));
-        let d = await r.json();
-        if(!d.success) throw new Error(d.error||'Error');
-        dashLastData = d; dashTeachers = d.teachers || [];
-        renderDashboard(d);
-      }catch(e){ alert('ডাটা আনা যায়নি'); }
-      btn.disabled=false; btn.textContent='দেখুন';
-    }
 
-    function renderDashboard(d){
-      let statuses = d.statuses || [];
-      let total = statuses.length, done = statuses.filter(s=>s.submitted&&s.filledSubjects===s.totalSubjects).length;
-      let partial = statuses.filter(s=>s.submitted&&s.filledSubjects<s.totalSubjects).length, miss = statuses.filter(s=>!s.submitted).length;
+// ----------------------------------------------------
+// ৫. PRINT APP LOGIC
+// ----------------------------------------------------
+let printCurrentData=null;
 
-      document.getElementById('dTotal').textContent = total; document.getElementById('dDone').textContent = done; document.getElementById('dMiss').textContent = miss+partial;
-      document.getElementById('btnWaAll').style.display = (miss>0 || partial>0) ? 'block' : 'none';
+function checkPrintAuth(){
+  let role = localStorage.getItem('hw_role');
+  let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
+  if(role === 'Admin'){
+    document.getElementById('pLoginSection').style.display='none';
+    document.getElementById('pPrintBody').style.display='block';
+    document.getElementById('loggedUserPrint').textContent = adminName;
+    loadPrintConfig();
+  } else {
+    document.getElementById('pLoginSection').style.display='block';
+    document.getElementById('pPrintBody').style.display='none';
+  }
+}
 
-      let grid = document.getElementById('dGrid'); grid.innerHTML='';
-      statuses.forEach(s=>{
-        let pct = s.totalSubjects>0 ? Math.round((s.filledSubjects/s.totalSubjects)*100) : (s.submitted?100:0);
-        let teacher = dashTeachers.find(t => t.cls && t.cls.split(',').map(x=>x.trim()).includes(s.tabName));
-        let waBtn='';
-        if(teacher){
-          if(pct===100){ 
-            waBtn='<span style="display:block;text-align:center;color:#10b981;font-weight:bold;font-size:12px;">✔ জমা আছে</span>'; 
-          }
-          else { 
-            let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${document.getElementById('dDate').value}) ${s.displayName} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। অনুগ্রহ করে দ্রুত হোমওয়ার্ক দিন।\nধন্যবাদ।`); 
-            let finalWaNum = getWaNum(teacher.phone);
-            waBtn=`<a class="btn-wa" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">💬 রিমাইন্ডার</a>`; 
-          }
-        }
-        let card=document.createElement('div'); card.className='d-cls-card';
-        card.innerHTML=`<div class="d-cls-head"><span>${pct===100?'✅':(pct===0?'❌':'⚠️')}</span> ${s.displayName}</div><div class="d-cls-body"><div class="d-progress-wrap"><div class="d-progress-bar" style="width:${pct}%; background:${pct===100?'#10b981':(pct===0?'#ef4444':'#f59e0b')}"></div></div><div style="font-size:12px; margin-bottom:10px; color:#64748b;">${s.filledSubjects}/${s.totalSubjects} বিষয়</div>${waBtn}</div>`;
-        grid.appendChild(card);
-      });
+async function doPrintLogin(){
+  let user=document.getElementById('pUser').value.trim(); let pass=document.getElementById('pPass').value.trim();
+  if(!user||!pass) return;
+  let btn=document.getElementById('pLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
+  try{
+    let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'print'})});
+    let data=await res.json();
+    if(data.success){ 
+      localStorage.setItem('hw_role', data.role); 
+      localStorage.setItem('hw_admin_name', data.teacher);
+      checkPrintAuth(); 
+    } else { alert(data.error); }
+  }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
+  btn.textContent='লগ-ইন করুন'; btn.disabled=false;
+}
+
+async function loadPrintConfig(){
+  try{
+    let r = await fetch(GAS_URL+'?action=config'); let d = await r.json();
+    let sel = document.getElementById('hClass'); sel.innerHTML = '<option value="">— শ্রেণি বাছাই করুন —</option>';
+    d.classes.forEach(c => { let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; sel.appendChild(o); });
+  }catch(e){}
+}
+
+async function doPrintFetch(){
+  let date = document.getElementById('hDate').value.trim();
+  let sel = document.getElementById('hClass'); let tab = sel.value.trim();
+  let clsTx= sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+  if(!date || !tab) return;
+  document.getElementById('pBtnFetch').innerHTML = '<span style="font-size: 18px;">⏳</span> অপেক্ষা করুন...';
+  try{
+    let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
+    let data=await r.json();
+    if(data.found && data.subjects.length > 0){
+      let filled=data.subjects.filter(s=>s.homework.trim());
+      document.getElementById('hPrevBody').innerHTML=filled.map(s=>`<tr><td style="font-weight:bold; color:#1e40af;">${s.subject}</td><td>${s.homework}</td></tr>`).join('');
+      document.getElementById('hPrev').style.display = 'table'; document.getElementById('hPrintBar').style.display = 'flex';
+      printCurrentData={ date:date, classLabel:clsTx, subjects:filled };
+    } else { alert('কোনো ডাটা পাওয়া যায়নি!'); }
+  }catch(err){ alert('সার্ভার এরর!'); }
+  document.getElementById('pBtnFetch').innerHTML = '<span style="font-size: 18px;">👁️</span> হোমওয়ার্ক দেখুন';
+}
+
+function getDayName(dateStr) {
+  let parts = dateStr.split('-');
+  let d = new Date(parts[2], parts[1] - 1, parts[0]);
+  let days = ['রবিবার', 'সোমবার', 'মঙ্গলবার', 'বুধবার', 'বৃহস্পতিবার', 'শুক্রবার', 'শনিবার'];
+  return days[d.getDay()];
+}
+
+function doPrintOut(copies){
+  if(!printCurrentData) return;
+  let date=printCurrentData.date; 
+  let dayName=getDayName(date);
+  let classLabel=printCurrentData.classLabel; 
+  let subjects=printCurrentData.subjects; // Only filled subjects
+  
+  // Generating rows ONLY for the subjects that are available
+  let rowsHtml = '';
+  for(let i=0; i<subjects.length; i++){
+    rowsHtml += `<tr><td class="cs">${subjects[i].subject}</td><td class="ch">${subjects[i].homework}</td></tr>`;
+  }
+
+  let layoutClass = (copies === 8) ? 'print-8' : 'print-6';
+
+  function card(){
+    return `<div class="c">
+      <div class="ct">
+        <span>দৈনিক ডায়েরি - শ্রেণিঃ ${classLabel}</span>
+        <span>তারিখঃ ${date}, ${dayName}</span>
+      </div>
+      <table class="ctbl"><tbody>${rowsHtml}</tbody></table>
+    </div>`;
+  }
+
+  let cards='';
+  for(let i=0; i<copies; i++) cards += card();
+  
+  let w=window.open('','_blank','width=960,height=720');
+  w.document.write(`<!DOCTYPE html><html><head><title>${classLabel} | ${date}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+      @page{size:A4 portrait; margin:0}
+      *{margin:0; padding:0; box-sizing:border-box}
+      body{font-family:'Noto Serif Bengali',serif; width:210mm; height:297mm; background:white; overflow:hidden}
+      #g{width:210mm; height:297mm; padding:4mm; display:grid; gap:3mm; margin:0 auto;}
+      .print-6{grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(3,1fr);}
+      .print-8{grid-template-columns:repeat(2,1fr); grid-template-rows:repeat(4,1fr);}
+      .c{border:2px solid #000; display:flex; flex-direction:column; background:white; page-break-inside:avoid; overflow:hidden;}
+      .ct{background:#ffd9b3!important; -webkit-print-color-adjust:exact; print-color-adjust:exact; color:#000; padding:4px 6px; display:flex; justify-content:space-between; align-items:center; font-size:12px; font-weight:bold; border-bottom:2px solid #000;}
       
-      let tbody = document.getElementById('dTeacherBody'); let statusMap={}; statuses.forEach(s=>statusMap[s.tabName]=s);
-      let rowsHtml='';
-      dashTeachers.forEach(t=>{
-        let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
-        clsArr.forEach(c=>{
-          let s=statusMap[c], stText='দেয়নি ✘', stColor='#ef4444';
-          if(s && s.submitted && s.filledSubjects===s.totalSubjects){ stText='জমা ✔'; stColor='#10b981'; } 
-          else if(s && s.submitted){ stText='আংশিক ⚠'; stColor='#f59e0b'; }
-          let waHtml='—';
-          if(t.phone && stColor!=='#10b981'){ 
-            let msg=encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${d.date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি।`); 
-            let finalWaNum = getWaNum(t.phone);
-            waHtml=`<a class="wa-link" href="https://wa.me/${finalWaNum}?text=${msg}" target="_blank">📲 পাঠান</a>`; 
-          }
-          rowsHtml+=`<tr><td><b>${t.name}</b></td><td>${c}</td><td>${getDisplayNum(t.phone)}</td><td style="color:${stColor}; font-weight:bold;">${stText}</td><td>${waHtml}</td></tr>`;
-        });
-      });
-      tbody.innerHTML=rowsHtml; document.getElementById('dTeacherCard').style.display = rowsHtml ? 'block' : 'none';
-    }
+      /* Table Height 100% stretches beautifully without empty rows */
+      .ctbl{width:100%; border-collapse:collapse; table-layout:fixed; height:100%;}
+      .ctbl td{border-bottom:1px dotted #000; padding:2px 4px; font-size:11.5px; line-height:1.2; vertical-align:middle; color:#000;}
+      .ctbl tr:last-child td {border-bottom:none;}
+      .cs{width:24mm; font-weight:bold; text-align:center; border-right:2px solid #000;}
+      .ch{padding-left: 6px;}
+      @media print{body{-webkit-print-color-adjust:exact; print-color-adjust:exact}}
+    </style></head><body><div id="g" class="${layoutClass}">${cards}</div>
+    <script>setTimeout(function(){window.print();},800);<\/script></body></html>`);
+  w.document.close();
+}
+</script>
 
-    function sendDashAllMissing(){
-      if(!dashLastData) return; let date = dashLastData.date, statusMap={};
-      dashLastData.statuses.forEach(s=>statusMap[s.tabName]=s);
-      let msgs = [];
-      dashTeachers.forEach(t=>{ 
-         let clsArr = t.cls ? t.cls.split(',').map(c=>c.trim()).filter(Boolean) : [];
-         clsArr.forEach(c=>{
-             let s = statusMap[c];
-             if(!s || !s.submitted || s.filledSubjects<s.totalSubjects) {
-                 msgs.push({ phone: getWaNum(t.phone), text: encodeURIComponent(`আসসালামু আলাইকুম,\nপ্রিয় শিক্ষক,\nআজকের (${date}) ${c} শ্রেণির হোমওয়ার্ক এখনো সম্পূর্ণ এন্ট্রি দেওয়া হয়নি। দ্রুত দিন।`) });
-             }
-         });
-      });
-      if(msgs.length===0){ alert('সবাই হোমওয়ার্ক দিয়েছেন 🎉'); return; }
-      let i=0; function openNext(){ if(i>=msgs.length) return; window.open('https://wa.me/'+msgs[i].phone+'?text='+msgs[i].text,'_blank'); i++; if(i<msgs.length) setTimeout(openNext,1200); }
-      openNext();
-    }
-
-
-    // ----------------------------------------------------
-    // ৫. PRINT APP LOGIC
-    // ----------------------------------------------------
-    let printCurrentData=null;
-
-    function checkPrintAuth(){
-      let role = localStorage.getItem('hw_role');
-      let adminName = localStorage.getItem('hw_admin_name') || 'অ্যাডমিন';
-      if(role === 'Admin'){
-        document.getElementById('pLoginSection').style.display='none';
-        document.getElementById('pPrintBody').style.display='block';
-        document.getElementById('loggedUserPrint').textContent = adminName; // নাম দেখাচ্ছে
-        loadPrintConfig();
-      } else {
-        document.getElementById('pLoginSection').style.display='block';
-        document.getElementById('pPrintBody').style.display='none';
-      }
-    }
-
-    async function doPrintLogin(){
-      let user=document.getElementById('pUser').value.trim(); let pass=document.getElementById('pPass').value.trim();
-      if(!user||!pass) return;
-      let btn=document.getElementById('pLoginBtn'); btn.textContent='অপেক্ষা করুন...'; btn.disabled=true;
-      try{
-        let res=await fetch(GAS_URL,{method:'POST',body:JSON.stringify({action:'login',username:user,password:pass,system:'print'})});
-        let data=await res.json();
-        if(data.success){ 
-          localStorage.setItem('hw_role', data.role); 
-          localStorage.setItem('hw_admin_name', data.teacher);
-          checkPrintAuth(); 
-        } else { alert(data.error); }
-      }catch(e){ alert('ইন্টারনেট সংযোগ চেক করুন'); }
-      btn.textContent='লগ-ইন করুন'; btn.disabled=false;
-    }
-
-    async function loadPrintConfig(){
-      try{
-        let r = await fetch(GAS_URL+'?action=config'); let d = await r.json();
-        let sel = document.getElementById('hClass'); sel.innerHTML = '<option value="">— শ্রেণি বাছাই করুন —</option>';
-        d.classes.forEach(c => { let o=document.createElement('option'); o.value=c.tabName; o.textContent=c.displayName; sel.appendChild(o); });
-      }catch(e){}
-    }
-
-    async function doPrintFetch(){
-      let date = document.getElementById('hDate').value.trim();
-      let sel = document.getElementById('hClass'); let tab = sel.value.trim();
-      let clsTx= sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
-      if(!date || !tab) return;
-      document.getElementById('pBtnFetch').textContent = 'অপেক্ষা করুন...';
-      try{
-        let r=await fetch(GAS_URL+'?action=homework&tab='+encodeURIComponent(tab)+'&date='+encodeURIComponent(date));
-        let data=await r.json();
-        if(data.found && data.subjects.length > 0){
-          let filled=data.subjects.filter(s=>s.homework.trim());
-          document.getElementById('hPrevBody').innerHTML=filled.map(s=>`<tr><td style="font-weight:bold; color:#1e40af;">${s.subject}</td><td>${s.homework}</td></tr>`).join('');
-          document.getElementById('hPrev').style.display = 'table'; document.getElementById('hPrintBar').style.display = 'block';
-          printCurrentData={ date:date, classLabel:clsTx, subjects:filled };
-        } else { alert('কোনো ডাটা পাওয়া যায়নি!'); }
-      }catch(err){ alert('সার্ভার এরর!'); }
-      document.getElementById('pBtnFetch').textContent = 'হোমওয়ার্ক দেখুন';
-    }
-
-    function doPrintOut(){
-      if(!printCurrentData) return;
-      let date=printCurrentData.date; let classLabel=printCurrentData.classLabel; let subjects=printCurrentData.subjects;
-      let rows=subjects.map(s=>`<tr><td class="cs">${s.subject}</td><td class="ch">${s.homework}</td></tr>`).join('');
-      function card(){
-        return `<div class="c"><div class="ct"><span class="csc">${SCHOOL_NAME}</span><span class="ccl">${classLabel}</span><span class="cdt">${date.replace(/-/g,'/')}</span></div><table class="ctbl"><thead><tr><th class="ths">বিষয়</th><th>হোমওয়ার্ক</th></tr></thead><tbody>${rows}</tbody></table><table class="csign"><tr><td class="sl" style="width:20%">অভিভাবকের<br>স্বাক্ষর</td><td class="sb" style="width:30%"></td><td class="sl" style="width:20%">শ্রেণি শিক্ষকের<br>স্বাক্ষর</td><td class="sb" style="width:30%"></td></tr></table></div>`;
-      }
-      let cards=[0,1,2,3,4,5].map(card).join('');
-      let w=window.open('','_blank','width=960,height=720');
-      w.document.write(`<!DOCTYPE html><html><head><title>${classLabel} | ${date}</title><style>@page{size:A4 portrait;margin:0}*{margin:0;padding:0;box-sizing:border-box}body{font-family:sans-serif;width:210mm;height:297mm;background:white;overflow:hidden}#g{width:210mm;height:297mm;padding:3mm;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,1fr);gap:2.5mm}.c{border:2px solid #0f172a;border-radius:4px;overflow:hidden;display:flex;flex-direction:column}.ct{background:#0f172a!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:white;padding:3px 6px;display:flex;align-items:center;gap:4px;min-height:18px;flex-shrink:0;font-size:9px;font-weight:700;}.csc{flex:1;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ccl{background:rgba(255,255,255,.2);border-radius:3px;padding:2px 5px;white-space:nowrap;font-size:8px;}.cdt{white-space:nowrap;font-size:8px;margin-left:3px}.ctbl{flex:1;width:100%;height:100%;border-collapse:collapse;font-size:9px;table-layout:fixed;}.ctbl thead tr{background:#f1f5f9!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.ctbl th{padding:2px 4px;border:1px solid #cbd5e1;font-size:8.5px;font-weight:700;text-align:center;line-height:1.2;color:#0f172a}.ths{width:22mm}.ctbl td{padding:1px 4px;border:1px solid #cbd5e1;vertical-align:middle;line-height:1.25;word-break:break-word;height:auto;}.cs{font-weight:700;color:#1e3a8a;width:22mm;white-space:nowrap}.ch{color:#0f172a}.ctbl tbody tr:nth-child(even) td{background:#f8fafc!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}.csign{width:100%;border-collapse:collapse;border-top:2px solid #0f172a;flex-shrink:0}.csign td{border:1px solid #94a3b8;padding:0px 2px;font-size:7.5px;text-align:center;height:16px;vertical-align:middle;line-height:1.2;}.sl{background:#e2e8f0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;font-weight:700;color:#0f172a}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}</style></head><body><div id="g">${cards}</div><script>setTimeout(function(){window.print();},500);<\/script></body></html>`);
-      w.document.close();
-    }
-  </script>
-
-  <!-- PWA Service Worker Registration -->
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
